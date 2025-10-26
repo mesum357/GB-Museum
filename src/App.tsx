@@ -9,6 +9,9 @@ import Home from "./pages/Home";
 import Heroes from "./pages/Heroes";
 import DistrictGilgit from "./pages/DistrictGilgit";
 import SilkRoute from "./pages/SilkRoute";
+import Library from "./pages/Library";
+import Blogs from "./pages/Blogs";
+import VirtualExperience from "./pages/VirtualExperience";
 import Polo from "./pages/history/Polo";
 import SilkRouteHistory from "./pages/history/SilkRouteHistory";
 import Modern from "./pages/history/Modern";
@@ -43,6 +46,9 @@ const App = () => {
                 <Route path="/heroes" element={<Heroes />} />
                 <Route path="/district-gilgit" element={<DistrictGilgit />} />
                 <Route path="/silk-route" element={<SilkRoute />} />
+                <Route path="/library" element={<Library />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/virtual-experience" element={<VirtualExperience />} />
                 <Route path="/history/polo" element={<Polo />} />
                 <Route path="/history/silk-route" element={<SilkRouteHistory />} />
                 <Route path="/history/modern" element={<Modern />} />

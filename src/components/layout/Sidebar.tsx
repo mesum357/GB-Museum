@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { ChevronDown, Menu, X, Home, Users, MapPin, Route, History } from "lucide-react";
+import { ChevronDown, Menu, X, Home, Users, MapPin, Route, History, BookOpen, FileText, Glasses } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,9 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "GB Heroes", url: "/heroes", icon: Users },
     { title: "District Gilgit", url: "/district-gilgit", icon: MapPin },
     { title: "Silk Route", url: "/silk-route", icon: Route },
+    { title: "Library", url: "/library", icon: BookOpen },
+    { title: "Blogs", url: "/blogs", icon: FileText },
+    { title: "Virtual Experience", url: "/virtual-experience", icon: Glasses },
   ];
 
   const historyItems = [
