@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { ChevronDown, Menu, X, Home, Users, MapPin, Route, History, BookOpen, FileText, Glasses } from "lucide-react";
+import { ChevronDown, Menu, X, Home, Users, MapPin, Route, History, BookOpen, FileText, Glasses, Images } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ interface SidebarProps {
 
 const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [cultureOpen, setCultureOpen] = useState(false);
 
   const mainItems = [
     { title: "Home", url: "/", icon: Home },
@@ -19,6 +20,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "District Gilgit", url: "/district-gilgit", icon: MapPin },
     { title: "Silk Route", url: "/silk-route", icon: Route },
     { title: "Library", url: "/library", icon: BookOpen },
+    { title: "Gallery", url: "/gallery", icon: Images },
     { title: "Blogs", url: "/blogs", icon: FileText },
     { title: "Virtual Experience", url: "/virtual-experience", icon: Glasses },
   ];
@@ -29,6 +31,17 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "Modern Era", url: "/history/modern" },
     { title: "Liberation War", url: "/history/liberation-war" },
     { title: "Prehistoric", url: "/history/prehistoric" },
+  ];
+
+  const cultureItems = [
+    { title: "District Gilgit", url: "/culture/district-gilgit" },
+    { title: "District Astore", url: "/district-astore" },
+    { title: "District Nagar", url: "/culture/district-nagar" },
+    { title: "District Ghizer", url: "/district-ghizer" },
+    { title: "District Diamer", url: "/district-diamer" },
+    { title: "District Shigar", url: "/district-shigar" },
+    { title: "District Hunza", url: "/culture/district-hunza" },
+    { title: "District Skardu", url: "/culture/district-skardu" },
   ];
 
   return (
@@ -123,6 +136,63 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
                     className="ml-8 mt-1 space-y-1 overflow-hidden"
                   >
                     {historyItems.map((item) => (
+                      <li key={item.url}>
+                        <NavLink
+                          to={item.url}
+                          className={({ isActive }) =>
+                            cn(
+                              "block px-3 py-2 rounded-md text-sm transition-colors",
+                              "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                              isActive && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                            )
+                          }
+                        >
+                          {item.title}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            )}
+          </li>
+
+          {/* Culture & Tradition Dropdown */}
+          <li>
+            <button
+              onClick={() => setCultureOpen(!cultureOpen)}
+              aria-expanded={cultureOpen}
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
+                "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                collapsed && "justify-center"
+              )}
+            >
+              <MapPin className="h-5 w-5 flex-shrink-0" />
+              {!collapsed && (
+                <>
+                  <span className="flex-1 text-left">Culture & Tradition</span>
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 transition-transform",
+                      cultureOpen && "rotate-180"
+                    )}
+                  />
+                </>
+              )}
+            </button>
+
+            {!collapsed && (
+              <AnimatePresence>
+                {cultureOpen && (
+                  <motion.ul
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="ml-8 mt-1 space-y-1 overflow-hidden"
+                  >
+                    {cultureItems.map((item) => (
                       <li key={item.url}>
                         <NavLink
                           to={item.url}

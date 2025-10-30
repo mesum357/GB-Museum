@@ -8,10 +8,22 @@ import Sidebar from "@/components/layout/Sidebar";
 import Home from "./pages/Home";
 import Heroes from "./pages/Heroes";
 import DistrictGilgit from "./pages/DistrictGilgit";
+import DistrictGilgitCulture from "./pages/culture/DistrictGilgitCulture";
+import DistrictAstore from "./pages/DistrictAstore";
+import DistrictNagar from "./pages/DistrictNagar";
+import DistrictNagarCulture from "./pages/culture/DistrictNagarCulture";
+import DistrictGhizer from "./pages/DistrictGhizer";
+import DistrictDiamer from "./pages/DistrictDiamer";
+import DistrictShigar from "./pages/DistrictShigar";
+import DistrictHunza from "./pages/DistrictHunza";
+import DistrictHunzaCulture from "./pages/culture/DistrictHunzaCulture";
+import DistrictSkardu from "./pages/DistrictSkardu";
+import DistrictSkarduCulture from "./pages/culture/DistrictSkarduCulture";
 import SilkRoute from "./pages/SilkRoute";
 import Library from "./pages/Library";
 import Blogs from "./pages/Blogs";
 import VirtualExperience from "./pages/VirtualExperience";
+import Gallery from "./pages/Gallery";
 import Polo from "./pages/history/Polo";
 import SilkRouteHistory from "./pages/history/SilkRouteHistory";
 import Modern from "./pages/history/Modern";
@@ -45,10 +57,22 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/heroes" element={<Heroes />} />
                 <Route path="/district-gilgit" element={<DistrictGilgit />} />
+                <Route path="/culture/district-gilgit" element={<DistrictGilgitCulture />} />
+                <Route path="/district-astore" element={<DistrictAstore />} />
+                <Route path="/district-nagar" element={<DistrictNagar />} />
+                <Route path="/culture/district-nagar" element={<DistrictNagarCulture />} />
+                <Route path="/district-ghizer" element={<DistrictGhizer />} />
+                <Route path="/district-diamer" element={<DistrictDiamer />} />
+                <Route path="/district-shigar" element={<DistrictShigar />} />
+                <Route path="/district-hunza" element={<DistrictHunza />} />
+                <Route path="/culture/district-hunza" element={<DistrictHunzaCulture />} />
+                <Route path="/district-skardu" element={<DistrictSkardu />} />
+                <Route path="/culture/district-skardu" element={<DistrictSkarduCulture />} />
                 <Route path="/silk-route" element={<SilkRoute />} />
                 <Route path="/library" element={<Library />} />
                 <Route path="/blogs" element={<Blogs />} />
                 <Route path="/virtual-experience" element={<VirtualExperience />} />
+                <Route path="/gallery" element={<Gallery />} />
                 <Route path="/history/polo" element={<Polo />} />
                 <Route path="/history/silk-route" element={<SilkRouteHistory />} />
                 <Route path="/history/modern" element={<Modern />} />

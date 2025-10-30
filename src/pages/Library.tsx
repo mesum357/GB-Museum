@@ -1,19 +1,42 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Hero from "@/components/shared/Hero";
-import Modal from "@/components/shared/Modal";
-import { books, bookCategories } from "@/data/library";
+import BookModal from "@/components/shared/BookModal";
+import { books, bookCategories, Book, Review } from "@/data/library";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Calendar, User } from "lucide-react";
+import { BookOpen, Calendar, User, Star } from "lucide-react";
 
 const Library = () => {
-  const [selectedBook, setSelectedBook] = useState<typeof books[0] | null>(null);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [booksData, setBooksData] = useState<Book[]>(books);
 
   const filteredBooks = selectedCategory === "All" 
-    ? books 
-    : books.filter(book => book.category === selectedCategory);
+    ? booksData 
+    : booksData.filter(book => book.category === selectedCategory);
+
+  const handleAddReview = (bookId: string, review: Omit<Review, 'id'>) => {
+    setBooksData(prevBooks => 
+      prevBooks.map(book => {
+        if (book.id === bookId) {
+          const newReview: Review = {
+            ...review,
+            id: `review-${Date.now()}`
+          };
+          const updatedReviews = [...book.reviews, newReview];
+          const newRating = updatedReviews.reduce((sum, r) => sum + r.rating, 0) / updatedReviews.length;
+          return {
+            ...book,
+            reviews: updatedReviews,
+            rating: Math.round(newRating * 10) / 10,
+            reviewCount: updatedReviews.length
+          };
+        }
+        return book;
+      })
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,15 +97,26 @@ const Library = () => {
                   <CardDescription className="mb-4 line-clamp-3">
                     {book.description}
                   </CardDescription>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      {book.author}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {book.year}
-                    </span>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <User className="h-4 w-4" />
+                        {book.author}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {book.year}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                        <span className="text-sm font-medium">{book.rating}</span>
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        ({book.reviewCount} reviews)
+                      </span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -92,42 +126,12 @@ const Library = () => {
       </section>
 
       {/* Book Detail Modal */}
-      <Modal
+      <BookModal
+        book={selectedBook}
         isOpen={!!selectedBook}
         onClose={() => setSelectedBook(null)}
-        title={selectedBook?.title || ""}
-      >
-        {selectedBook && (
-          <div className="space-y-6">
-            <img
-              src={selectedBook.cover}
-              alt={selectedBook.title}
-              className="w-full h-96 object-cover rounded-lg"
-            />
-            <div className="space-y-4">
-              <Badge>{selectedBook.category}</Badge>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  <span><strong>Author:</strong> {selectedBook.author}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span><strong>Year:</strong> {selectedBook.year}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-muted-foreground" />
-                  <span><strong>Pages:</strong> {selectedBook.pages}</span>
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Description</h3>
-                <p className="text-muted-foreground">{selectedBook.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
+        onAddReview={handleAddReview}
+      />
     </div>
   );
 };
