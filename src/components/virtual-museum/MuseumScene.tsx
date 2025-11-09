@@ -1,0 +1,214 @@
+import { Suspense, useRef, useState, useEffect } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { ContactShadows, PerspectiveCamera, OrbitControls, useGLTF } from '@react-three/drei';
+// Post-processing temporarily disabled due to compatibility issues with @react-three/postprocessing v3.0.4
+// import { EffectComposer, Bloom } from '@react-three/postprocessing';
+import { MuseumRoom } from './MuseumRoom';
+import { PlayerController } from './PlayerController';
+import { Exhibits } from './Exhibits';
+import { Lighting } from './Lighting';
+import { UIOverlay } from './UIOverlay';
+import { ClickToStart } from './ClickToStart';
+import { MuseumProvider, useMuseum } from '@/contexts/MuseumContext';
+import { Cursor } from './Cursor';
+
+// Preload all models for instant loading
+function ModelPreloader() {
+  useEffect(() => {
+    // Preload all GLTF models
+    useGLTF.preload('/models/markhor/model.gltf');
+    useGLTF.preload('/models/leopard/model.gltf');
+    useGLTF.preload('/models/goathead/model.gltf');
+    useGLTF.preload('/models/bookshelf/model.gltf');
+    useGLTF.preload('/models/cupboard/model.gltf');
+    useGLTF.preload('/models/gems/model.gltf');
+    useGLTF.preload('/models/attire1/model.gltf');
+    useGLTF.preload('/models/attire2/model.gltf');
+  }, []);
+  return null;
+}
+
+interface ExhibitData {
+  title: string;
+  description: string;
+  year?: number;
+  artist?: string;
+  material?: string;
+}
+
+interface MuseumSceneProps {
+  onExit?: () => void;
+}
+
+// Camera preset component
+function CameraPresets({ controlsRef }: { controlsRef: React.RefObject<any> }) {
+  const { camera } = useThree();
+
+  const setCameraPreset = (preset: 'entrance' | 'pedestal' | 'overhead') => {
+    switch (preset) {
+      case 'entrance':
+        // Wide angle showing corridor → marks entrance path
+        camera.position.set(0, 1.6, 6);
+        camera.lookAt(0, 1.6, 0);
+        break;
+      case 'pedestal':
+        // Close-up: camera slides to 1.2m from statue focusing on horn detail
+        camera.position.set(0, 1.2, 1.2);
+        camera.lookAt(0, 0.5, 0);
+        break;
+      case 'overhead':
+        // 60° downward view to reveal LED layout
+        camera.position.set(0, 5, 0);
+        camera.lookAt(0, 0, 0);
+        break;
+    }
+    if (controlsRef.current) {
+      controlsRef.current.update();
+    }
+  };
+
+  // Expose preset function to window for keyboard shortcuts
+  (window as any).setCameraPreset = setCameraPreset;
+
+  return null;
+}
+
+// Post-processing component wrapper - disabled due to compatibility issues
+// The LED lights will still work and emit light, just without the bloom post-processing effect
+// function PostProcessing() {
+//   const { size, gl } = useThree();
+//   const [ready, setReady] = useState(false);
+//   
+//   // Wait for renderer to be fully initialized
+//   useFrame(() => {
+//     if (gl && size.width > 0 && size.height > 0 && !ready) {
+//       setReady(true);
+//     }
+//   });
+//   
+//   // Only render if we have valid size and renderer is ready
+//   if (!ready || !size.width || !size.height) {
+//     return null;
+//   }
+//   
+//   return (
+//     <EffectComposer>
+//       <Bloom
+//         intensity={1.2}
+//         threshold={0.6}
+//         smoothing={0.9}
+//         radius={0.8}
+//       />
+//     </EffectComposer>
+//   );
+// }
+
+export function MuseumScene({ onExit }: MuseumSceneProps) {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const controlsRef = useRef<any>(null);
+
+  const handleExhibitInteract = (id: string, data: ExhibitData) => {
+    // No modal functionality - exhibits are non-interactive
+  };
+
+  const handleFullscreen = () => {
+    setIsFullscreen(!!document.fullscreenElement);
+  };
+
+  const handleStart = () => {
+    setIsStarted(true);
+  };
+
+  // Update exhibit components to pass onInteract
+  const ExhibitsWithInteraction = () => {
+    return <Exhibits onInteract={handleExhibitInteract} />;
+  };
+
+  return (
+    <MuseumProvider>
+      <div className="fixed inset-0 w-full h-full bg-black" style={{ cursor: isStarted ? 'none' : 'default' }}>
+        <Canvas
+          shadows
+          gl={{ 
+            antialias: true, 
+            toneMappingExposure: 1.2,
+            powerPreference: 'high-performance',
+            logarithmicDepthBuffer: true,
+            stencil: false,
+            depth: true,
+          }}
+          dpr={[1, Math.min(window.devicePixelRatio || 1, 2)]}
+          camera={{ position: [0, 1.6, 4.5], fov: 50 }}
+          performance={{ min: 0.5 }}
+          frameloop="always"
+        >
+          <ModelPreloader />
+          <PerspectiveCamera makeDefault position={[0, 1.6, 4.5]} fov={50} />
+          
+          {/* Orbit Controls for camera presets */}
+          {!isStarted && (
+            <OrbitControls
+              ref={controlsRef}
+              minDistance={1.2}
+              maxDistance={8}
+              maxPolarAngle={1.4}
+              enableDamping
+              dampingFactor={0.05}
+            />
+          )}
+          
+          {/* Camera Presets */}
+          {!isStarted && <CameraPresets controlsRef={controlsRef} />}
+          
+          {/* Lighting */}
+          <Lighting />
+          
+          {/* Museum Room */}
+          <Suspense fallback={null}>
+            <MuseumRoom />
+          </Suspense>
+          
+          {/* Contact Shadows */}
+          <ContactShadows 
+            position={[0, 0.01, 0]} 
+            opacity={0.3} 
+            scale={30} 
+            blur={1.5} 
+            far={10} 
+          />
+          
+          {/* Exhibits */}
+          <Suspense fallback={null}>
+            <ExhibitsWithInteraction />
+          </Suspense>
+          
+          {/* Player Controller */}
+          {isStarted && <PlayerController />}
+          
+          {/* Post-processing - Bloom for LED lights - disabled due to compatibility issues */}
+          {/* LED lights will still work and emit light, just without bloom effect */}
+          {/* <Suspense fallback={null}>
+            <PostProcessing />
+          </Suspense> */}
+        </Canvas>
+      
+      {/* Click to Start */}
+      {!isStarted && <ClickToStart onStart={handleStart} />}
+      
+      {/* Cursor - shown when 3D experience is started */}
+      {isStarted && <Cursor isActive={true} />}
+      
+      {/* UI Overlay */}
+      <UIOverlay
+        selectedExhibit={null}
+        onCloseExhibit={() => {}}
+        onExit={onExit || (() => {})}
+        onFullscreen={handleFullscreen}
+        isFullscreen={isFullscreen}
+      />
+      </div>
+    </MuseumProvider>
+  );
+}
+

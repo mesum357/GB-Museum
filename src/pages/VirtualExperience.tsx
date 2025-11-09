@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Play, Glasses, MousePointer, Headphones, ArrowRight } from "lucide-react";
+import { Play, Glasses, MousePointer, Headphones, ArrowRight, Loader2 } from "lucide-react";
+import { MuseumScene } from "@/components/virtual-museum/MuseumScene";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 const VirtualExperience = () => {
   const [isStarted, setIsStarted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setHideSidebar } = useSidebar();
+
+  // Hide sidebar when 3D experience starts, show it when it ends
+  useEffect(() => {
+    setHideSidebar(isStarted);
+    return () => {
+      setHideSidebar(false);
+    };
+  }, [isStarted, setHideSidebar]);
 
   const features = [
     {
@@ -28,6 +40,7 @@ const VirtualExperience = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
+      {!isStarted && (
       <section className="relative h-[80vh] overflow-hidden bg-muted flex items-center justify-center">
         <motion.div
           initial={{ scale: 1.1 }}
@@ -56,16 +69,34 @@ const VirtualExperience = () => {
             <Button
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6"
-              onClick={() => setIsStarted(true)}
+              onClick={() => {
+                setIsLoading(true);
+                setTimeout(() => {
+                  setIsLoading(false);
+                  setIsStarted(true);
+                }, 500);
+              }}
+              disabled={isLoading}
             >
-              <Play className="mr-2 h-6 w-6" />
-              Start Virtual Experience
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <Play className="mr-2 h-6 w-6" />
+                  Launch Experience
+                </>
+              )}
             </Button>
           </motion.div>
         </div>
       </section>
+      )}
 
       {/* Features Section */}
+      {!isStarted && (
       <section className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Experience Features</h2>
@@ -114,10 +145,26 @@ const VirtualExperience = () => {
                 <Button
                   size="lg"
                   className="bg-white text-primary hover:bg-white/90"
-                  onClick={() => setIsStarted(true)}
+                  onClick={() => {
+                    setIsLoading(true);
+                    setTimeout(() => {
+                      setIsLoading(false);
+                      setIsStarted(true);
+                    }, 500);
+                  }}
+                  disabled={isLoading}
                 >
-                  <Play className="mr-2 h-5 w-5" />
-                  Launch Experience
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="mr-2 h-5 w-5" />
+                      Launch Experience
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
@@ -178,23 +225,23 @@ const VirtualExperience = () => {
           </div>
         </div>
       </section>
+      )}
 
-      {/* Modal placeholder for when virtual experience starts */}
+      {/* 3D Museum Scene */}
       {isStarted && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-          <div className="text-center text-white p-8">
-            <Glasses className="h-16 w-16 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-2xl font-bold mb-4">Loading Virtual Experience...</h2>
-            <p className="text-white/70 mb-6">Please wait while we prepare your immersive tour</p>
-            <Button
-              variant="outline"
-              className="bg-white text-black hover:bg-white/90"
-              onClick={() => setIsStarted(false)}
-            >
-              Exit
-            </Button>
-          </div>
-        </div>
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+              <div className="text-center text-white p-8">
+                <Loader2 className="h-16 w-16 mx-auto mb-4 animate-spin" />
+                <h2 className="text-2xl font-bold mb-4">Loading Virtual Museum...</h2>
+                <p className="text-white/70 mb-6">Preparing your immersive experience</p>
+              </div>
+            </div>
+          }
+        >
+          <MuseumScene onExit={() => setIsStarted(false)} />
+        </Suspense>
       )}
     </div>
   );

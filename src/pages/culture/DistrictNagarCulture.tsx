@@ -68,19 +68,19 @@ century AD.`;
     },
     {
       title: "Rakaposhi View Point",
-      images: [img("viewpoint1.jpg"), img("viewpoint2.jpg"), img("viewpoint3.jpg")],
+      images: [img("viewpoint1.webp"), img("viewpoint2.webp"), img("viewpoint3.webp")],
       description:
         "Rakaposhi view point provides clear view of Rakaposhi Mountain and is famous for adventure sports.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
     {
       title: "Diran Peak",
-      images: [img("diran1.jpg"), img("diran2.jpg"), img("diran3.jpg")],
+      images: [img("diran1.jpg"), img("diran2.webp"), img("diran3.jpg")],
       description:
         "Diran Peak (7266 meters) is famous for its pyramid shape\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
     {
       title: "Hoper Valley, Nagar",
-      images: [img("hoparvalley1.jpg"), img("hoparvalley2.jpg"), img("hoparvalley3.jpg")],
+      images: [img("hoparvalley1.webp"), img("hoparvalley2.webp"), img("hoparvalley3.webp")],
       description:
         "Hoper Valley is home to Spantik Peak, Hoper and Barpo Glaciers\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
@@ -92,7 +92,7 @@ century AD.`;
     },
     {
       title: "Hapakun Valley",
-      images: [img("hapakun1.jpg"), img("hapakun2.jpg"), img("hapakun3.jpg")],
+      images: [img("hapakun1.webp"), img("hapakun2.webp"), img("hapakun3.webp")],
       description:
         "Hapakun Valley serves as a primary base camp for expeditions to Rakaposhi Mountain.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
@@ -147,6 +147,108 @@ century AD.`;
                       <ImageSlider images={item.images} alt={item.title} className="w-full h-full" />
                     </div>
                   )}
+                  <div className="p-8 space-y-4">
+                    <h3 className="text-2xl font-bold">{item.title}</h3>
+                    <p className="text-base text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Culture and Traditions */}
+      <section className="py-16 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-primary">Culture and Traditions</h2>
+            <p className="text-muted-foreground mt-2">Traditional foods, attire, and cultural practices of Nagar</p>
+          </motion.div>
+
+          <div className="space-y-8">
+            {[
+              {
+                title: "Shapshoro",
+                description:
+                  "Traditional food of Valley includes Shapshoro, Buttering Dawdo, Harisa, Phitti. Shapshoro is the bread, stuffed with minced beef and onions.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
+                images: [img("shapshoro1.jpg"), img("shapshoro2.jpg"), img("shapshoro3.jpg")],
+              },
+              {
+                title: "Traditional attire of Nagar",
+                description:
+                  "Traditional attire includes woolen cap with Shanti and Choga\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
+                images: [img("nagaratire1.webp"), img("nagarattire2.jpg"), img("nagarattire3.jpg")],
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="max-w-6xl mx-auto"
+              >
+                <Card className="overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="aspect-[16/10] overflow-hidden bg-muted">
+                    <ImageSlider images={item.images} alt={item.title} className="w-full h-full" />
+                  </div>
+                  <div className="p-8 space-y-4">
+                    <h3 className="text-2xl font-bold">{item.title}</h3>
+                    <p className="text-base text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Flora and Fauna */}
+      <section className="py-16 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-primary">Flora and Fauna</h2>
+            <p className="text-muted-foreground mt-2">Natural bounty and wildlife of Nagar</p>
+          </motion.div>
+
+          <div className="space-y-8">
+            {[
+              {
+                title: "Walnuts and Apricots",
+                description:
+                  "Nagar Valley is famous for its delicious fruits mainly Apricots, Walnuts and Apples\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
+                images: [img("walnut1.jpg"), img("walnut2.jpg"), img("walnut3.jpg")],
+              },
+              {
+                title: "Snow Leopard",
+                description:
+                  "Nagar Valley is home to rare Snow Leopard.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
+                images: [img("snowleopard1.jpg"), img("snowleopard2.jpg"), img("snowleopard3.jpg")],
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="max-w-6xl mx-auto"
+              >
+                <Card className="overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="aspect-[16/10] overflow-hidden bg-muted">
+                    <ImageSlider images={item.images} alt={item.title} className="w-full h-full" />
+                  </div>
                   <div className="p-8 space-y-4">
                     <h3 className="text-2xl font-bold">{item.title}</h3>
                     <p className="text-base text-muted-foreground leading-relaxed">{item.description}</p>

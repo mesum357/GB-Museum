@@ -83,7 +83,7 @@ const Home = () => {
                     className="rounded-lg shadow-lg w-full h-80 object-cover"
                   />
                   <p className="text-center mt-3 text-sm text-muted-foreground">
-                    Dr. Ahmed Khan, Director
+                    R. Lt Col Sallah-ud-Din, Head of Museum Team
                   </p>
                 </div>
               </div>
@@ -136,6 +136,106 @@ const Home = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Museum Tour Section */}
+      <section className="py-16 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-primary">Museum Tour</h2>
+            <p className="text-muted-foreground mt-2">
+              Explore the galleries and exhibitions of GB Museum
+            </p>
+          </motion.div>
+
+          <Gallery items={[
+            {
+              src: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
+              alt: "Museum Exhibition Hall",
+              caption: "Main exhibition hall showcasing cultural artifacts"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=800&h=600&fit=crop",
+              alt: "Museum Gallery",
+              caption: "Gallery displaying historical treasures"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1583483425010-c566431a7710?w=800&h=600&fit=crop",
+              alt: "Museum Interior",
+              caption: "Interior view of the museum"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=800&h=600&fit=crop",
+              alt: "Museum Collections",
+              caption: "Curated collections on display"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=600&fit=crop",
+              alt: "Museum Display",
+              caption: "Interactive displays and exhibits"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+              alt: "Museum Artifacts",
+              caption: "Rare artifacts and historical items"
+            }
+          ]} />
+        </div>
+      </section>
+
+      {/* Museum History Section */}
+      <section className="py-16 px-4 bg-muted">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-primary">Museum History</h2>
+            <p className="text-muted-foreground mt-2">
+              The journey of building GB Museum - from construction to completion
+            </p>
+          </motion.div>
+
+          <Gallery items={[
+            {
+              src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+              alt: "Museum Construction Phase 1",
+              caption: "Early construction phase of the museum"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
+              alt: "Museum Building Progress",
+              caption: "Museum building during construction"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+              alt: "Museum Foundation",
+              caption: "Foundation and early structural work"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&h=600&fit=crop",
+              alt: "Museum Development",
+              caption: "Development and progress of museum construction"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop",
+              alt: "Pre-Museum Site",
+              caption: "Site preparation before museum construction"
+            },
+            {
+              src: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&h=600&fit=crop",
+              alt: "Museum Near Completion",
+              caption: "Museum nearing completion"
+            }
+          ]} />
         </div>
       </section>
 

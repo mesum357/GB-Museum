@@ -1,14 +1,15 @@
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Search, Filter, Grid, List, X } from "lucide-react";
+import { Search, Filter, Grid, List, X, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GalleryCard from "@/components/shared/GalleryCard";
 import GalleryModal from "@/components/shared/GalleryModal";
-import { galleryCategories, galleryItems, searchItems, getItemsByCategory, type GalleryItem } from "@/data/gallery";
+import { galleryAPI } from "@/lib/api";
+import type { GalleryItem } from "@/data/gallery";
 
 const Gallery = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,22 +19,80 @@ const Gallery = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
+  // Fetch gallery items
+  const { data: itemsData, isLoading: itemsLoading } = useQuery({
+    queryKey: ["galleryItems"],
+    queryFn: async () => {
+      const response = await galleryAPI.getAll();
+      return response.data;
+    },
+  });
+
+  // Fetch categories
+  const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
+    queryKey: ["galleryCategories"],
+    queryFn: async () => {
+      const response = await galleryAPI.getCategories();
+      return response.data;
+    },
+  });
+
+  // Transform API data to match GalleryItem interface
+  const transformedItems: GalleryItem[] = useMemo(() => {
+    if (!itemsData) return [];
+    return itemsData.map((item: any) => ({
+      id: item._id,
+      title: item.title,
+      description: item.description || "",
+      src: item.src,
+      alt: item.alt || item.title,
+      type: item.type || "image",
+      category: item.category?._id || item.category || "",
+      tags: item.tags || [],
+      year: item.year,
+      location: item.location,
+      photographer: item.photographer,
+    }));
+  }, [itemsData]);
+
+  // Transform categories
+  const transformedCategories = useMemo(() => {
+    if (!categoriesData) return [];
+    return categoriesData.map((cat: any) => ({
+      id: cat._id,
+      name: cat.name,
+      description: cat.description || "",
+      icon: cat.icon || "📷",
+      color: cat.color || "from-blue-500 to-cyan-500",
+    }));
+  }, [categoriesData]);
+
   // Filter and search items
   const filteredItems = useMemo(() => {
-    let items = galleryItems;
+    let items = transformedItems;
 
     // Filter by category
     if (selectedCategory !== "all") {
-      items = getItemsByCategory(selectedCategory);
+      items = items.filter((item) => item.category === selectedCategory);
     }
 
     // Search filter
     if (searchQuery.trim()) {
-      items = searchItems(searchQuery);
+      const query = searchQuery.toLowerCase();
+      items = items.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query) ||
+          item.tags.some((tag) => tag.toLowerCase().includes(query)) ||
+          item.location?.toLowerCase().includes(query) ||
+          item.photographer?.toLowerCase().includes(query)
+      );
     }
 
     return items;
-  }, [selectedCategory, searchQuery]);
+  }, [transformedItems, selectedCategory, searchQuery]);
+
+  const isLoading = itemsLoading || categoriesLoading;
 
   const openModal = (item: GalleryItem) => {
     setSelectedItem(item);
@@ -149,11 +208,11 @@ const Gallery = () => {
                 >
                   All
                   <Badge variant="secondary" className="ml-2">
-                    {galleryItems.length}
+                    {transformedItems.length}
                   </Badge>
                 </Button>
-                {galleryCategories.map((category) => {
-                  const count = getItemsByCategory(category.id).length;
+                {transformedCategories.map((category) => {
+                  const count = transformedItems.filter((item) => item.category === category.id).length;
                   return (
                     <Button
                       key={category.id}
@@ -182,7 +241,7 @@ const Gallery = () => {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-semibold">
-                {selectedCategory === "all" ? "All Items" : galleryCategories.find(c => c.id === selectedCategory)?.name}
+                {selectedCategory === "all" ? "All Items" : transformedCategories.find(c => c.id === selectedCategory)?.name}
               </h2>
               <p className="text-muted-foreground">
                 {filteredItems.length} {filteredItems.length === 1 ? "item" : "items"} found
@@ -202,7 +261,11 @@ const Gallery = () => {
           </div>
 
           {/* Gallery Grid */}
-          {filteredItems.length > 0 ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : filteredItems.length > 0 ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

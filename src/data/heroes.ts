@@ -37,19 +37,19 @@ export const heroes: Hero[] = [
       {
         title: "BORN",
         description: "24 August 1914",
-        image: "/assets/img/heroes/shahhero.webp",
+        image: "/assets/img/heroes/shahachievement.png",
         year: ""
       },
       {
         title: "HOME TOWN",
         description: "Nagar, Gilgit Baltistan",
-        image: "/assets/img/heroes/shahhero.webp",
+        image: "/assets/img/heroes/shahachievement.png",
         year: ""
       },
       {
         title: "ACHIEVEMENTS",
         description: "Sitara-e-Jurat",
-        image: "/assets/img/heroes/shahhero.webp",
+        image: "/assets/img/heroes/shahachievement.png",
         year: ""
       },
       {

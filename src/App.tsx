@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "@/components/layout/Sidebar";
+import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import Home from "./pages/Home";
 import Heroes from "./pages/Heroes";
 import DistrictGilgit from "./pages/DistrictGilgit";
@@ -13,6 +14,7 @@ import DistrictAstore from "./pages/DistrictAstore";
 import DistrictNagar from "./pages/DistrictNagar";
 import DistrictNagarCulture from "./pages/culture/DistrictNagarCulture";
 import DistrictGhizer from "./pages/DistrictGhizer";
+import DistrictGhizerCulture from "./pages/culture/DistrictGhizerCulture";
 import DistrictDiamer from "./pages/DistrictDiamer";
 import DistrictShigar from "./pages/DistrictShigar";
 import DistrictHunza from "./pages/DistrictHunza";
@@ -33,26 +35,24 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => {
+const AppContent = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { hideSidebar } = useSidebar();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <div className="min-h-screen flex w-full">
-            <Sidebar
-              collapsed={sidebarCollapsed}
-              onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-            />
-            <main
-              className="flex-1 transition-all duration-300"
-              style={{
-                marginLeft: sidebarCollapsed ? "64px" : "256px",
-              }}
-            >
+    <div className="min-h-screen flex w-full">
+      {!hideSidebar && (
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
+      )}
+      <main
+        className="flex-1 transition-all duration-300"
+        style={{
+          marginLeft: hideSidebar ? "0" : sidebarCollapsed ? "64px" : "256px",
+        }}
+      >
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/heroes" element={<Heroes />} />
@@ -62,6 +62,7 @@ const App = () => {
                 <Route path="/district-nagar" element={<DistrictNagar />} />
                 <Route path="/culture/district-nagar" element={<DistrictNagarCulture />} />
                 <Route path="/district-ghizer" element={<DistrictGhizer />} />
+                <Route path="/culture/district-ghizer" element={<DistrictGhizerCulture />} />
                 <Route path="/district-diamer" element={<DistrictDiamer />} />
                 <Route path="/district-shigar" element={<DistrictShigar />} />
                 <Route path="/district-hunza" element={<DistrictHunza />} />
@@ -83,7 +84,25 @@ const App = () => {
               </Routes>
             </main>
           </div>
-        </BrowserRouter>
+  );
+};
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <SidebarProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <AppContent />
+          </BrowserRouter>
+        </SidebarProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

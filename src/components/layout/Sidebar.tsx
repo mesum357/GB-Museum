@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { ChevronDown, Menu, X, Home, Users, MapPin, Route, History, BookOpen, FileText, Glasses, Images } from "lucide-react";
+import { ChevronDown, Menu, X, Home, Users, MapPin, History, BookOpen, FileText, Glasses, Images } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,6 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "Home", url: "/", icon: Home },
     { title: "GB Heroes", url: "/heroes", icon: Users },
     { title: "District Gilgit", url: "/district-gilgit", icon: MapPin },
-    { title: "Silk Route", url: "/silk-route", icon: Route },
     { title: "Library", url: "/library", icon: BookOpen },
     { title: "Gallery", url: "/gallery", icon: Images },
     { title: "Blogs", url: "/blogs", icon: FileText },
@@ -37,7 +36,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "District Gilgit", url: "/culture/district-gilgit" },
     { title: "District Astore", url: "/district-astore" },
     { title: "District Nagar", url: "/culture/district-nagar" },
-    { title: "District Ghizer", url: "/district-ghizer" },
+    { title: "District Ghizer", url: "/culture/district-ghizer" },
     { title: "District Diamer", url: "/district-diamer" },
     { title: "District Shigar", url: "/district-shigar" },
     { title: "District Hunza", url: "/culture/district-hunza" },
