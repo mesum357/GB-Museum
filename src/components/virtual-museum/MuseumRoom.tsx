@@ -462,22 +462,22 @@ function getCachedWallTexture(): THREE.CanvasTexture {
     canvas.height = 1024;
     const ctx = canvas.getContext('2d')!;
     
-    // Simplified wall texture
-    const gradient = ctx.createLinearGradient(0, 0, 0, 1024);
-    gradient.addColorStop(0, '#f5f5f0');
-    gradient.addColorStop(0.3, '#fafaf5');
-    gradient.addColorStop(0.7, '#ffffff');
-    gradient.addColorStop(1, '#fafaf5');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1024, 1024);
+    // Light colors for wall checkerboard
+    const lightColor1 = '#f5f5f0'; // Very light beige
+    const lightColor2 = '#fafaf5'; // Slightly lighter beige
     
-    // Simplified pattern - fewer iterations
-    const patternSize = 128;
-    for (let y = 0; y < 1024; y += patternSize) {
-      for (let x = 0; x < 1024; x += patternSize) {
-        ctx.strokeStyle = 'rgba(200, 180, 150, 0.3)';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, patternSize, patternSize);
+    // Very small checks - 12px squares
+    const checkSize = 12;
+    
+    // Create checkerboard pattern
+    for (let y = 0; y < 1024; y += checkSize) {
+      for (let x = 0; x < 1024; x += checkSize) {
+        const isEven = Math.floor(x / checkSize) % 2 === 0;
+        const isOdd = Math.floor(y / checkSize) % 2 === 0;
+        const shouldBeLight = (isEven && isOdd) || (!isEven && !isOdd);
+        
+        ctx.fillStyle = shouldBeLight ? lightColor1 : lightColor2;
+        ctx.fillRect(x, y, checkSize, checkSize);
       }
     }
     
@@ -497,21 +497,23 @@ function getCachedFloorTexture(): THREE.CanvasTexture {
     canvas.height = 1024;
     const ctx = canvas.getContext('2d')!;
     
-    const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
-    gradient.addColorStop(0, '#5c4033');
-    gradient.addColorStop(0.5, '#8b6f47');
-    gradient.addColorStop(1, '#5c4033');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1024, 1024);
+    // Light brown colors for checkerboard
+    const lightBrown1 = '#d4a574'; // Light brown
+    const lightBrown2 = '#c9a082'; // Slightly darker light brown
     
-    // Simplified wood grain
-    ctx.strokeStyle = 'rgba(60, 40, 25, 0.3)';
-    ctx.lineWidth = 1;
-    for (let y = 0; y < 1024; y += 64) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(1024, y);
-      ctx.stroke();
+    // Very small checks - 12px squares
+    const checkSize = 12;
+    
+    // Create checkerboard pattern
+    for (let y = 0; y < 1024; y += checkSize) {
+      for (let x = 0; x < 1024; x += checkSize) {
+        const isEven = Math.floor(x / checkSize) % 2 === 0;
+        const isOdd = Math.floor(y / checkSize) % 2 === 0;
+        const shouldBeLight = (isEven && isOdd) || (!isEven && !isOdd);
+        
+        ctx.fillStyle = shouldBeLight ? lightBrown1 : lightBrown2;
+        ctx.fillRect(x, y, checkSize, checkSize);
+      }
     }
     
     textureCache.floor = new THREE.CanvasTexture(canvas);
