@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: gilgit-heritage-hub-frontend
+    env: node
+    buildCommand: npm install --production=false && npm run build
+    startCommand: npm run preview
+    envVars:
+      - key: NODE_ENV
+        value: production
+
