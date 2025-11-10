@@ -174,7 +174,7 @@ export function GoatHead({ id, position, rotation, data, onInteract }: GoatHeadP
       <mesh position={[0, -0.15, 0]} castShadow receiveShadow>
         <boxGeometry args={[0.5, 0.08, 0.03]} />
         <meshStandardMaterial
-          color="#5c493e"
+          color="#5c493e"cd
           roughness={0.6}
           metalness={0.1}
         />
