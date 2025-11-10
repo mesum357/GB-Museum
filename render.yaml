@@ -1,9 +1,0 @@
-services:
-  - type: static
-    name: gilgit-heritage-hub-frontend
-    buildCommand: npm ci --production=false && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: NODE_ENV
-        value: production
-

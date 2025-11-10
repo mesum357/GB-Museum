@@ -11,6 +11,7 @@ import { UIOverlay } from './UIOverlay';
 import { ClickToStart } from './ClickToStart';
 import { MuseumProvider, useMuseum } from '@/contexts/MuseumContext';
 import { Cursor } from './Cursor';
+import { MobileJoystick } from './MobileJoystick';
 
 // Preload all models for instant loading
 function ModelPreloader() {
@@ -103,10 +104,50 @@ function CameraPresets({ controlsRef }: { controlsRef: React.RefObject<any> }) {
 //   );
 // }
 
+// WebGL Context Loss Handler
+function WebGLContextHandler() {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      console.warn('WebGL context lost. Attempting to restore...');
+    };
+
+    const handleContextRestored = () => {
+      console.log('WebGL context restored.');
+      // Force a re-render
+      gl.forceContextRestore();
+    };
+
+    const canvas = gl.domElement;
+    canvas.addEventListener('webglcontextlost', handleContextLost);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+    return () => {
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+    };
+  }, [gl]);
+
+  return null;
+}
+
 export function MuseumScene({ onExit }: MuseumSceneProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const controlsRef = useRef<any>(null);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleExhibitInteract = (id: string, data: ExhibitData) => {
     // No modal functionality - exhibits are non-interactive
@@ -125,26 +166,45 @@ export function MuseumScene({ onExit }: MuseumSceneProps) {
     return <Exhibits onInteract={handleExhibitInteract} />;
   };
 
+  // Mobile-optimized settings
+  const isMobileDevice = isMobile;
+  const dpr = isMobileDevice ? [1, 1.5] : [1, Math.min(window.devicePixelRatio || 1, 2)];
+  const shadowsEnabled = !isMobileDevice; // Disable shadows on mobile for performance
+  const antialias = !isMobileDevice; // Disable antialiasing on mobile
+
   return (
     <MuseumProvider>
       <div className="fixed inset-0 w-full h-full bg-black" style={{ cursor: isStarted ? 'none' : 'default' }}>
         <Canvas
-          shadows
+          shadows={shadowsEnabled}
           gl={{ 
-            antialias: true, 
+            antialias, 
             toneMappingExposure: 1.2,
-            powerPreference: 'high-performance',
-            logarithmicDepthBuffer: true,
+            powerPreference: isMobileDevice ? 'default' : 'high-performance',
+            logarithmicDepthBuffer: !isMobileDevice,
             stencil: false,
             depth: true,
+            preserveDrawingBuffer: false, // Better performance
+            failIfMajorPerformanceCaveat: false, // Allow fallback on low-end devices
           }}
-          dpr={[1, Math.min(window.devicePixelRatio || 1, 2)]}
-          camera={{ position: [0, 1.6, 4.5], fov: 50 }}
-          performance={{ min: 0.5 }}
+          dpr={dpr}
+          camera={{ position: [0, 1.6, 4.5], fov: isMobileDevice ? 60 : 50 }}
+          performance={{ min: isMobileDevice ? 0.3 : 0.5 }}
           frameloop="always"
+          onCreated={({ gl }) => {
+            // Handle WebGL context loss
+            gl.domElement.addEventListener('webglcontextlost', (e) => {
+              e.preventDefault();
+              console.warn('WebGL context lost');
+            });
+            gl.domElement.addEventListener('webglcontextrestored', () => {
+              console.log('WebGL context restored');
+            });
+          }}
         >
+          <WebGLContextHandler />
           <ModelPreloader />
-          <PerspectiveCamera makeDefault position={[0, 1.6, 4.5]} fov={50} />
+          <PerspectiveCamera makeDefault position={[0, 1.6, 4.5]} fov={isMobileDevice ? 60 : 50} />
           
           {/* Orbit Controls for camera presets */}
           {!isStarted && (
@@ -169,14 +229,16 @@ export function MuseumScene({ onExit }: MuseumSceneProps) {
             <MuseumRoom />
           </Suspense>
           
-          {/* Contact Shadows */}
-          <ContactShadows 
-            position={[0, 0.01, 0]} 
-            opacity={0.3} 
-            scale={30} 
-            blur={1.5} 
-            far={10} 
-          />
+          {/* Contact Shadows - Disabled on mobile for performance */}
+          {!isMobileDevice && (
+            <ContactShadows 
+              position={[0, 0.01, 0]} 
+              opacity={0.3} 
+              scale={30} 
+              blur={1.5} 
+              far={10} 
+            />
+          )}
           
           {/* Exhibits */}
           <Suspense fallback={null}>
@@ -196,8 +258,11 @@ export function MuseumScene({ onExit }: MuseumSceneProps) {
       {/* Click to Start */}
       {!isStarted && <ClickToStart onStart={handleStart} />}
       
-      {/* Cursor - shown when 3D experience is started */}
-      {isStarted && <Cursor isActive={true} />}
+      {/* Cursor - shown when 3D experience is started (desktop only) */}
+      {isStarted && !isMobile && <Cursor isActive={true} />}
+      
+      {/* Mobile Joystick - shown when started on mobile */}
+      {isStarted && isMobile && <MobileJoystick isActive={true} />}
       
       {/* UI Overlay */}
       <UIOverlay

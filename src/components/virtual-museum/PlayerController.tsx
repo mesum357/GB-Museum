@@ -2,7 +2,22 @@ import { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
-import nipplejs from 'nipplejs';
+import { useMuseum } from '@/contexts/MuseumContext';
+
+// Global state for joystick movement (shared between components)
+const joystickState = {
+  moveForward: false,
+  moveBackward: false,
+  moveLeft: false,
+  moveRight: false,
+  setMoveForward: (value: boolean) => { joystickState.moveForward = value; },
+  setMoveBackward: (value: boolean) => { joystickState.moveBackward = value; },
+  setMoveLeft: (value: boolean) => { joystickState.moveLeft = value; },
+  setMoveRight: (value: boolean) => { joystickState.moveRight = value; },
+};
+
+// Export for use by MobileJoystick component
+export { joystickState };
 
 interface PlayerControllerProps {
   speed?: number;
@@ -19,110 +34,70 @@ export function PlayerController({ speed = 5 }: PlayerControllerProps) {
   const direction = useRef(new THREE.Vector3());
   const raycaster = useRef(new THREE.Raycaster());
   const controlsRef = useRef<any>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const joystickRef = useRef<any>(null);
+  const { isMobile } = useMuseum();
 
-  // Detect mobile
+  // Sync joystick state to local refs
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    };
-    checkMobile();
+    const interval = setInterval(() => {
+      moveForward.current = joystickState.moveForward;
+      moveBackward.current = joystickState.moveBackward;
+      moveLeft.current = joystickState.moveLeft;
+      moveRight.current = joystickState.moveRight;
+    }, 16); // ~60fps
+
+    return () => clearInterval(interval);
   }, []);
 
-  // Setup joystick for mobile
+  // Right side touch for camera look (mobile only)
   useEffect(() => {
-    if (isMobile && !joystickRef.current) {
-      // Wait for DOM to be ready
-      const timeoutId = setTimeout(() => {
-        const zone = document.getElementById('joystick-zone');
-        if (zone && !joystickRef.current) {
-          const joystick = nipplejs.create({
-            zone: zone,
-            mode: 'static',
-            position: { left: '10%', bottom: '10%' },
-            color: 'rgba(255, 255, 255, 0.5)',
-            size: 100,
-          });
+    if (!isMobile) return;
 
-          joystick.on('move', (evt: any, data: any) => {
-            const angle = data.angle.radian;
-            const force = data.force;
-            
-            if (force > 0.1) {
-              moveForward.current = Math.cos(angle) > 0.3;
-              moveBackward.current = Math.cos(angle) < -0.3;
-              moveLeft.current = Math.sin(angle) > 0.3;
-              moveRight.current = Math.sin(angle) < -0.3;
-            } else {
-              moveForward.current = false;
-              moveBackward.current = false;
-              moveLeft.current = false;
-              moveRight.current = false;
-            }
-          });
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isLooking = false;
 
-          joystick.on('end', () => {
-            moveForward.current = false;
-            moveBackward.current = false;
-            moveLeft.current = false;
-            moveRight.current = false;
-          });
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1 && e.touches[0].clientX > window.innerWidth / 2) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isLooking = true;
+      }
+    };
 
-          joystickRef.current = joystick;
-        }
-      }, 100);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isLooking && e.touches.length === 1) {
+        e.preventDefault();
+        const deltaX = e.touches[0].clientX - touchStartX;
+        const deltaY = e.touches[0].clientY - touchStartY;
+        
+        camera.rotation.y -= deltaX * 0.002;
+        camera.rotation.x -= deltaY * 0.002;
+        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+        
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    };
 
-      // Right side touch for camera look
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let isLooking = false;
+    const handleTouchEnd = () => {
+      isLooking = false;
+    };
 
-      const handleTouchStart = (e: TouchEvent) => {
-        if (e.touches.length === 1 && e.touches[0].clientX > window.innerWidth / 2) {
-          touchStartX = e.touches[0].clientX;
-          touchStartY = e.touches[0].clientY;
-          isLooking = true;
-        }
-      };
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd);
 
-      const handleTouchMove = (e: TouchEvent) => {
-        if (isLooking && e.touches.length === 1) {
-          const deltaX = e.touches[0].clientX - touchStartX;
-          const deltaY = e.touches[0].clientY - touchStartY;
-          
-          camera.rotation.y -= deltaX * 0.002;
-          camera.rotation.x -= deltaY * 0.002;
-          camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
-          
-          touchStartX = e.touches[0].clientX;
-          touchStartY = e.touches[0].clientY;
-        }
-      };
-
-      const handleTouchEnd = () => {
-        isLooking = false;
-      };
-
-      window.addEventListener('touchstart', handleTouchStart);
-      window.addEventListener('touchmove', handleTouchMove);
-      window.addEventListener('touchend', handleTouchEnd);
-
-      return () => {
-        clearTimeout(timeoutId);
-        if (joystickRef.current) {
-          (joystickRef.current as any).destroy();
-          joystickRef.current = null;
-        }
-        window.removeEventListener('touchstart', handleTouchStart);
-        window.removeEventListener('touchmove', handleTouchMove);
-        window.removeEventListener('touchend', handleTouchEnd);
-      };
-    }
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
   }, [isMobile, camera]);
 
-  // Keyboard controls
+  // Keyboard controls (desktop only)
   useEffect(() => {
+    if (isMobile) return;
+
     const onKeyDown = (event: KeyboardEvent) => {
       switch (event.code) {
         case 'ArrowUp':
@@ -179,11 +154,11 @@ export function PlayerController({ speed = 5 }: PlayerControllerProps) {
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('keyup', onKeyUp);
     };
-  }, []);
+  }, [isMobile]);
 
   // Movement and collision
   useFrame((state, delta) => {
-    // Check if pointer lock is active (for desktop)
+    // Check if pointer lock is active (for desktop) or mobile
     const isLocked = isMobile || (controlsRef.current && controlsRef.current.isLocked);
     
     if (!isLocked && !isMobile) return;
@@ -263,23 +238,16 @@ export function PlayerController({ speed = 5 }: PlayerControllerProps) {
     camera.position.copy(nextPos);
   });
 
+  // Only return Three.js components - no HTML elements
+  // The joystick zone div will be handled outside the Canvas
+  if (isMobile) {
+    return null; // Mobile controls are handled via DOM events, not 3D components
+  }
+
   return (
-    <>
-      {!isMobile && (
-        <PointerLockControls
-          ref={controlsRef}
-          selector="canvas"
-        />
-      )}
-      {/* Joystick zone for mobile */}
-      {isMobile && (
-        <div
-          id="joystick-zone"
-          className="fixed bottom-0 left-0 w-1/3 h-1/3 pointer-events-none z-50"
-          style={{ touchAction: 'none' }}
-        />
-      )}
-    </>
+    <PointerLockControls
+      ref={controlsRef}
+      selector="canvas"
+    />
   );
 }
-
