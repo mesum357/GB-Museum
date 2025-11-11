@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,58 +32,101 @@ import Modern from "./pages/history/Modern";
 import LiberationWar from "./pages/history/LiberationWar";
 import Prehistoric from "./pages/history/Prehistoric";
 import NotFound from "./pages/NotFound";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const { hideSidebar } = useSidebar();
+  const { hideSidebar, setHideSidebar } = useSidebar();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Determine screen size and hide sidebar on tablet/mobile
+  useEffect(() => {
+    const update = () => {
+      const small = window.innerWidth < 1024; // < lg
+      setIsSmallScreen(small);
+      setHideSidebar(small);
+      if (!small) setMobileOpen(false); // reset on desktop
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [setHideSidebar]);
+
+  const shouldRenderSidebar = (!isSmallScreen && !hideSidebar) || (isSmallScreen && mobileOpen);
 
   return (
     <div className="min-h-screen flex w-full">
-      {!hideSidebar && (
+      {/* Hamburger for tablet/mobile */}
+      {isSmallScreen && (
+        <div className="fixed top-4 left-4 z-[60]">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
+      )}
+
+      {/* Backdrop for tablet/mobile when open */}
+      {isSmallScreen && mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {shouldRenderSidebar && (
         <Sidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
       )}
+
       <main
         className="flex-1 transition-all duration-300"
         style={{
-          marginLeft: hideSidebar ? "0" : sidebarCollapsed ? "64px" : "256px",
+          // Only shift content on desktop when sidebar visible
+          marginLeft: !isSmallScreen && !hideSidebar ? (sidebarCollapsed ? "64px" : "256px") : "0",
         }}
       >
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/heroes" element={<Heroes />} />
-                <Route path="/district-gilgit" element={<DistrictGilgit />} />
-                <Route path="/culture/district-gilgit" element={<DistrictGilgitCulture />} />
-                <Route path="/district-astore" element={<DistrictAstore />} />
-                <Route path="/district-nagar" element={<DistrictNagar />} />
-                <Route path="/culture/district-nagar" element={<DistrictNagarCulture />} />
-                <Route path="/district-ghizer" element={<DistrictGhizer />} />
-                <Route path="/culture/district-ghizer" element={<DistrictGhizerCulture />} />
-                <Route path="/district-diamer" element={<DistrictDiamer />} />
-                <Route path="/district-shigar" element={<DistrictShigar />} />
-                <Route path="/district-hunza" element={<DistrictHunza />} />
-                <Route path="/culture/district-hunza" element={<DistrictHunzaCulture />} />
-                <Route path="/district-skardu" element={<DistrictSkardu />} />
-                <Route path="/culture/district-skardu" element={<DistrictSkarduCulture />} />
-                <Route path="/silk-route" element={<SilkRoute />} />
-                <Route path="/library" element={<Library />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/virtual-experience" element={<VirtualExperience />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/history/polo" element={<Polo />} />
-                <Route path="/history/silk-route" element={<SilkRouteHistory />} />
-                <Route path="/history/modern" element={<Modern />} />
-                <Route path="/history/liberation-war" element={<LiberationWar />} />
-                <Route path="/history/prehistoric" element={<Prehistoric />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-          </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/heroes" element={<Heroes />} />
+          <Route path="/district-gilgit" element={<DistrictGilgit />} />
+          <Route path="/culture/district-gilgit" element={<DistrictGilgitCulture />} />
+          <Route path="/district-astore" element={<DistrictAstore />} />
+          <Route path="/district-nagar" element={<DistrictNagar />} />
+          <Route path="/culture/district-nagar" element={<DistrictNagarCulture />} />
+          <Route path="/district-ghizer" element={<DistrictGhizer />} />
+          <Route path="/culture/district-ghizer" element={<DistrictGhizerCulture />} />
+          <Route path="/district-diamer" element={<DistrictDiamer />} />
+          <Route path="/district-shigar" element={<DistrictShigar />} />
+          <Route path="/district-hunza" element={<DistrictHunza />} />
+          <Route path="/culture/district-hunza" element={<DistrictHunzaCulture />} />
+          <Route path="/district-skardu" element={<DistrictSkardu />} />
+          <Route path="/culture/district-skardu" element={<DistrictSkarduCulture />} />
+          <Route path="/silk-route" element={<SilkRoute />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/virtual-experience" element={<VirtualExperience />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/history/polo" element={<Polo />} />
+          <Route path="/history/silk-route" element={<SilkRouteHistory />} />
+          <Route path="/history/modern" element={<Modern />} />
+          <Route path="/history/liberation-war" element={<LiberationWar />} />
+          <Route path="/history/prehistoric" element={<Prehistoric />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+    </div>
   );
 };
 

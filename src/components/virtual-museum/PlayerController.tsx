@@ -48,18 +48,28 @@ export function PlayerController({ speed = 5 }: PlayerControllerProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Right side touch for camera look (mobile only)
+  // Right side touch for camera look (mobile only) - horizontal rotation only, no tilt
   useEffect(() => {
     if (!isMobile) return;
 
+    // Set fixed camera pitch (no tilt) on mobile
+    camera.rotation.x = 0;
+    
     let touchStartX = 0;
-    let touchStartY = 0;
     let isLooking = false;
 
     const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1 && e.touches[0].clientX > window.innerWidth / 2) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
+      // Only allow camera rotation if touch is on the right side and not on joystick area
+      const touchX = e.touches[0].clientX;
+      const touchY = e.touches[0].clientY;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      
+      // Check if touch is on right side and not in joystick area (bottom-left corner)
+      if (e.touches.length === 1 && 
+          touchX > screenWidth * 0.3 && 
+          touchY < screenHeight * 0.7) {
+        touchStartX = touchX;
         isLooking = true;
       }
     };
@@ -68,14 +78,12 @@ export function PlayerController({ speed = 5 }: PlayerControllerProps) {
       if (isLooking && e.touches.length === 1) {
         e.preventDefault();
         const deltaX = e.touches[0].clientX - touchStartX;
-        const deltaY = e.touches[0].clientY - touchStartY;
         
-        camera.rotation.y -= deltaX * 0.002;
-        camera.rotation.x -= deltaY * 0.002;
-        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+        // Only horizontal rotation (y-axis), no vertical tilt (x-axis)
+        camera.rotation.y -= deltaX * 0.003;
+        camera.rotation.x = 0; // Keep camera level (no tilt)
         
         touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
       }
     };
 
@@ -158,6 +166,12 @@ export function PlayerController({ speed = 5 }: PlayerControllerProps) {
 
   // Movement and collision
   useFrame((state, delta) => {
+    // Keep camera level on mobile (no tilt: lock pitch and roll)
+    if (isMobile) {
+      camera.rotation.x = 0; // pitch
+      camera.rotation.z = 0; // roll
+    }
+
     // Check if pointer lock is active (for desktop) or mobile
     const isLocked = isMobile || (controlsRef.current && controlsRef.current.isLocked);
     

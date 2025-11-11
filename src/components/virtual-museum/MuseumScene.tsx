@@ -204,7 +204,11 @@ export function MuseumScene({ onExit }: MuseumSceneProps) {
         >
           <WebGLContextHandler />
           <ModelPreloader />
-          <PerspectiveCamera makeDefault position={[0, 1.6, 4.5]} fov={isMobileDevice ? 60 : 50} />
+          <PerspectiveCamera 
+            makeDefault 
+            position={[0, 1.6, 4.5]} 
+            fov={isMobileDevice ? 60 : 50}
+          />
           
           {/* Orbit Controls for camera presets */}
           {!isStarted && (
