@@ -4,6 +4,7 @@ import { ChevronDown, Menu, X, Home, Users, MapPin, History, BookOpen, FileText,
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/img/logo.png";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -50,18 +51,35 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
       className="fixed left-0 top-0 h-screen border-r border-border bg-sidebar z-50 flex flex-col"
     >
       {/* Header */}
-      <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
-        {!collapsed && (
+      <div className={cn(
+        "border-b border-sidebar-border flex items-center",
+        collapsed ? "p-2 flex-col gap-2" : "p-4 justify-between"
+      )}>
+        {!collapsed ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex items-center gap-2"
+            className="flex items-center"
           >
-            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">GB</span>
-            </div>
-            <span className="font-bold text-sidebar-foreground">Museum</span>
+            <img 
+              src={logo} 
+              alt="GB Museum Logo" 
+              className="h-10 w-auto object-contain"
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex items-center justify-center"
+          >
+            <img 
+              src={logo} 
+              alt="GB Museum Logo" 
+              className="h-8 w-auto object-contain"
+            />
           </motion.div>
         )}
         <Button

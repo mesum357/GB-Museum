@@ -458,29 +458,63 @@ const textureCache: {
 function getCachedWallTexture(): THREE.CanvasTexture {
   if (!textureCache.wall) {
     const canvas = document.createElement('canvas');
-    canvas.width = 1024; // Reduced from 2048
+    canvas.width = 1024;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d')!;
-    
-    // Light colors for wall checkerboard
-    const lightColor1 = '#f5f5f0'; // Very light beige
-    const lightColor2 = '#fafaf5'; // Slightly lighter beige
-    
-    // Very small checks - 12px squares
-    const checkSize = 12;
-    
-    // Create checkerboard pattern
-    for (let y = 0; y < 1024; y += checkSize) {
-      for (let x = 0; x < 1024; x += checkSize) {
-        const isEven = Math.floor(x / checkSize) % 2 === 0;
-        const isOdd = Math.floor(y / checkSize) % 2 === 0;
-        const shouldBeLight = (isEven && isOdd) || (!isEven && !isOdd);
-        
-        ctx.fillStyle = shouldBeLight ? lightColor1 : lightColor2;
-        ctx.fillRect(x, y, checkSize, checkSize);
+
+    // White base with subtle vertical gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, 1024);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, '#f6f7f9');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1024, 1024);
+
+    // Rectangular brownish checks on white
+    const tileW = 160; // rectangular width
+    const tileH = 100; // rectangular height
+    for (let y = 0; y < 1024; y += tileH) {
+      for (let x = 0; x < 1024; x += tileW) {
+        const ix = Math.floor(x / tileW);
+        const iy = Math.floor(y / tileH);
+        const isAlt = (ix + iy) % 2 === 0;
+
+        // two warm brown tones
+        const brownLight = '#d4a574';
+        const brownMid = '#c59976';
+        ctx.fillStyle = isAlt ? brownLight : brownMid;
+        ctx.globalAlpha = 0.18; // light overlay so white shows through
+        ctx.fillRect(x, y, tileW, tileH);
+        ctx.globalAlpha = 1.0;
+
+        // fine tile border
+        ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(x + 0.5, y + 0.5, tileW - 1, tileH - 1);
+
+        // subtle vertical wood-like streaks inside the brownish checks
+        ctx.strokeStyle = 'rgba(120, 90, 60, 0.15)';
+        ctx.lineWidth = 1;
+        for (let l = 1; l < 5; l++) {
+          const lx = x + (l * tileW) / 5;
+          ctx.beginPath();
+          ctx.moveTo(lx, y + 4);
+          ctx.lineTo(lx + Math.sin((lx + y) * 0.03) * 3, y + tileH - 4);
+          ctx.stroke();
+        }
       }
     }
-    
+
+    // gentle noise for plaster feel
+    const imageData = ctx.getImageData(0, 0, 1024, 1024);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const n = (Math.random() - 0.5) * 6;
+      data[i] = Math.max(0, Math.min(255, data[i] + n));
+      data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + n));
+      data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + n));
+    }
+    ctx.putImageData(imageData, 0, 0);
+
     textureCache.wall = new THREE.CanvasTexture(canvas);
     textureCache.wall.wrapS = THREE.RepeatWrapping;
     textureCache.wall.wrapT = THREE.RepeatWrapping;
@@ -493,33 +527,66 @@ function getCachedWallTexture(): THREE.CanvasTexture {
 function getCachedFloorTexture(): THREE.CanvasTexture {
   if (!textureCache.floor) {
     const canvas = document.createElement('canvas');
-    canvas.width = 1024; // Reduced from 2048
+    canvas.width = 1024;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d')!;
-    
-    // Light brown colors for checkerboard
-    const lightBrown1 = '#d4a574'; // Light brown
-    const lightBrown2 = '#c9a082'; // Slightly darker light brown
-    
-    // Very small checks - 12px squares
-    const checkSize = 12;
-    
-    // Create checkerboard pattern
-    for (let y = 0; y < 1024; y += checkSize) {
-      for (let x = 0; x < 1024; x += checkSize) {
-        const isEven = Math.floor(x / checkSize) % 2 === 0;
-        const isOdd = Math.floor(y / checkSize) % 2 === 0;
-        const shouldBeLight = (isEven && isOdd) || (!isEven && !isOdd);
-        
-        ctx.fillStyle = shouldBeLight ? lightBrown1 : lightBrown2;
-        ctx.fillRect(x, y, checkSize, checkSize);
+
+    // Brownish gradient base darker than walls
+    const grad = ctx.createLinearGradient(0, 0, 1024, 1024);
+    grad.addColorStop(0, '#4a2f22');
+    grad.addColorStop(0.5, '#7a553e');
+    grad.addColorStop(1, '#5b3e2d');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1024, 1024);
+
+    // Rectangular wooden tiles (wider tiles)
+    const tileW = 220;
+    const tileH = 120;
+    for (let y = 0; y < 1024; y += tileH) {
+      for (let x = 0; x < 1024; x += tileW) {
+        const ix = Math.floor(x / tileW);
+        const iy = Math.floor(y / tileH);
+        // alternate subtle tint
+        const tint = (ix + iy) % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.05)';
+        ctx.fillStyle = tint;
+        ctx.fillRect(x, y, tileW, tileH);
+
+        // wood grain curves
+        ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+        ctx.lineWidth = 1.5;
+        for (let l = 0; l < 8; l++) {
+          const ly = y + (l * tileH) / 8;
+          ctx.beginPath();
+          for (let px = x + 4; px < x + tileW - 4; px += 6) {
+            const py = ly + Math.sin((px + ly) * 0.05) * 2;
+            if (px === x + 4) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+
+        // tile edge/border
+        ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x + 0.5, y + 0.5, tileW - 1, tileH - 1);
       }
     }
-    
+
+    // subtle reflection/noise
+    const imageData = ctx.getImageData(0, 0, 1024, 1024);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const shine = Math.random() * 4 - 2;
+      data[i] = Math.max(0, Math.min(255, data[i] + shine));
+      data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + shine));
+      data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + shine));
+    }
+    ctx.putImageData(imageData, 0, 0);
+
     textureCache.floor = new THREE.CanvasTexture(canvas);
     textureCache.floor.wrapS = THREE.RepeatWrapping;
     textureCache.floor.wrapT = THREE.RepeatWrapping;
-    textureCache.floor.repeat.set(4, 4);
+    textureCache.floor.repeat.set(2, 2);
     textureCache.floor.generateMipmaps = true;
     textureCache.floor.minFilter = THREE.LinearMipmapLinearFilter;
   }
@@ -529,27 +596,42 @@ function getCachedFloorTexture(): THREE.CanvasTexture {
 function getCachedCeilingTexture(): THREE.CanvasTexture {
   if (!textureCache.ceiling) {
     const canvas = document.createElement('canvas');
-    canvas.width = 512; // Reduced from 1024
-    canvas.height = 512;
+    canvas.width = 1024;
+    canvas.height = 1024;
     const ctx = canvas.getContext('2d')!;
-    
-    const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
-    gradient.addColorStop(0, '#6B5238');
-    gradient.addColorStop(0.4, '#5a4d45');
-    gradient.addColorStop(0.7, '#4a3d35');
-    gradient.addColorStop(1, '#3a2d25');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 512, 512);
-    
-    // Simplified pattern
-    ctx.strokeStyle = 'rgba(214, 187, 168, 0.3)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(50, 50, 412, 412);
-    
+
+    // White gradient base
+    const grad = ctx.createLinearGradient(0, 0, 0, 1024);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, '#f4f5f8');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1024, 1024);
+
+    // Larger soft checks
+    const check = 180;
+    for (let y = 0; y < 1024; y += check) {
+      for (let x = 0; x < 1024; x += check) {
+        const even = ((x / check) + (y / check)) % 2 === 0;
+        ctx.fillStyle = even ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.0)';
+        ctx.fillRect(x, y, check, check);
+      }
+    }
+
+    // subtle noise for depth
+    const imageData = ctx.getImageData(0, 0, 1024, 1024);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const n = (Math.random() - 0.5) * 6;
+      data[i] = Math.max(0, Math.min(255, data[i] + n));
+      data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + n));
+      data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + n));
+    }
+    ctx.putImageData(imageData, 0, 0);
+
     textureCache.ceiling = new THREE.CanvasTexture(canvas);
     textureCache.ceiling.wrapS = THREE.RepeatWrapping;
     textureCache.ceiling.wrapT = THREE.RepeatWrapping;
-    textureCache.ceiling.repeat.set(2, 2);
+    textureCache.ceiling.repeat.set(1, 1);
     textureCache.ceiling.generateMipmaps = true;
     textureCache.ceiling.minFilter = THREE.LinearMipmapLinearFilter;
   }
@@ -994,4 +1076,5 @@ export function MuseumRoom() {
     </group>
   );
 }
+
 
