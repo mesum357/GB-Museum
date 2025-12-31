@@ -35,7 +35,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
 
   const cultureItems = [
     { title: "District Gilgit", url: "/culture/district-gilgit" },
-    { title: "District Astore", url: "/district-astore" },
+    { title: "District Astore", url: "/culture/district-astore" },
     { title: "District Nagar", url: "/culture/district-nagar" },
     { title: "District Ghizer", url: "/culture/district-ghizer" },
     { title: "District Diamer", url: "/district-diamer" },

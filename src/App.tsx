@@ -11,6 +11,7 @@ import Heroes from "./pages/Heroes";
 import DistrictGilgit from "./pages/DistrictGilgit";
 import DistrictGilgitCulture from "./pages/culture/DistrictGilgitCulture";
 import DistrictAstore from "./pages/DistrictAstore";
+import DistrictAstoreCulture from "./pages/culture/DistrictAstoreCulture";
 import DistrictNagar from "./pages/DistrictNagar";
 import DistrictNagarCulture from "./pages/culture/DistrictNagarCulture";
 import DistrictGhizer from "./pages/DistrictGhizer";
@@ -102,6 +103,7 @@ const AppContent = () => {
           <Route path="/district-gilgit" element={<DistrictGilgit />} />
           <Route path="/culture/district-gilgit" element={<DistrictGilgitCulture />} />
           <Route path="/district-astore" element={<DistrictAstore />} />
+          <Route path="/culture/district-astore" element={<DistrictAstoreCulture />} />
           <Route path="/district-nagar" element={<DistrictNagar />} />
           <Route path="/culture/district-nagar" element={<DistrictNagarCulture />} />
           <Route path="/district-ghizer" element={<DistrictGhizer />} />
