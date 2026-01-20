@@ -179,12 +179,6 @@ century AD.`;
                   "Traditional food of Valley includes Shapshoro, Buttering Dawdo, Harisa, Phitti. Shapshoro is the bread, stuffed with minced beef and onions.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
                 images: [img("shapshoro1.jpg"), img("shapshoro2.jpg"), img("shapshoro3.jpg")],
               },
-              {
-                title: "Traditional attire of Nagar",
-                description:
-                  "Traditional attire includes woolen cap with Shanti and Choga\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
-                images: [img("nagaratire1.webp"), img("nagarattire2.jpg"), img("nagarattire3.jpg")],
-              },
             ].map((item, idx) => (
               <motion.div
                 key={item.title}

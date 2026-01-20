@@ -18,34 +18,16 @@ early civilization in Yaseen Valley date back to
 
   const heritageAttractions = [
     {
-      title: "Megalithic Graves",
-      images: [img("megalithics1.jpg"), img("megalithics2.jpg"), img("megalithics3.jpg")],
-      description:
-        "Megalithic Graves dates back to 2000 BC at Yasin Valley.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
-    },
-    {
       title: "Yasin Fort",
       images: [img("yasinfort1.jpg"), img("yasinfort2.jpg"), img("yasinfort3.jpg")],
       description:
         "Yasin Fort was built in 1600 AD by ruler of Khushwaqt Dynasty, Raja Shah Khushwaqt\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
     {
-      title: "Gupis Fort, Gupis",
-      images: [img("gupisfort1.jpg"), img("gupisfort2.jpg"), img("gupisfort3.jpg")],
-      description:
-        "Gupis Fort, constructed by British Forces in 1894, served as the stagging camp for troops travelling from Chitral to Gilgit\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
-    },
-    {
       title: "Phander Valley",
       images: [img("phander1.jpg"), img("phander2.jpg"), img("phander3.jpg")],
       description:
         "Phandar Valley is renowned for its enchanting landscapes, pristine lakes, and lush green meadows\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
-    },
-    {
-      title: "Kalti Lake, Gupis",
-      images: [img("kaltilake1.jpg"), img("kaltilake2.jpg"), img("kaltilake3.jpg")],
-      description:
-        "Khalti Lake serves as a vital source of fresh water. It came into existence after a massive landslide blocked river Ghizer in 1980s. Khalti is famous for winter sports.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
     {
       title: "Ishkomen Valley",
@@ -76,12 +58,6 @@ early civilization in Yaseen Valley date back to
       images: [img("shandur1.webp"), img("shandur2.webp"), img("shandur3.jpg")],
       description:
         "Ghizer Valley is home to world's heighest polo ground, Shandur.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
-    },
-    {
-      title: "Trout fish",
-      images: [img("trout1.jpg"), img("trout2.jpg"), img("trout3.jpg")],
-      description:
-        "Trout fish, abundantly found in Ghizar Valley.\n\nThis site represents the rich cultural and historical heritage of Gilgit-Baltistan.",
     },
   ];
 
