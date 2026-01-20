@@ -38,7 +38,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "District Astore", url: "/culture/district-astore" },
     { title: "District Nagar", url: "/culture/district-nagar" },
     { title: "District Ghizer", url: "/culture/district-ghizer" },
-    { title: "District Diamer", url: "/district-diamer" },
+    { title: "District Diamer", url: "/culture/district-diamer" },
     { title: "District Shigar", url: "/district-shigar" },
     { title: "District Hunza", url: "/culture/district-hunza" },
     { title: "District Skardu", url: "/culture/district-skardu" },

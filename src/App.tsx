@@ -17,6 +17,7 @@ import DistrictNagarCulture from "./pages/culture/DistrictNagarCulture";
 import DistrictGhizer from "./pages/DistrictGhizer";
 import DistrictGhizerCulture from "./pages/culture/DistrictGhizerCulture";
 import DistrictDiamer from "./pages/DistrictDiamer";
+import DistrictDiamerCulture from "./pages/culture/DistrictDiamerCulture";
 import DistrictShigar from "./pages/DistrictShigar";
 import DistrictHunza from "./pages/DistrictHunza";
 import DistrictHunzaCulture from "./pages/culture/DistrictHunzaCulture";
@@ -109,6 +110,7 @@ const AppContent = () => {
           <Route path="/district-ghizer" element={<DistrictGhizer />} />
           <Route path="/culture/district-ghizer" element={<DistrictGhizerCulture />} />
           <Route path="/district-diamer" element={<DistrictDiamer />} />
+          <Route path="/culture/district-diamer" element={<DistrictDiamerCulture />} />
           <Route path="/district-shigar" element={<DistrictShigar />} />
           <Route path="/district-hunza" element={<DistrictHunza />} />
           <Route path="/culture/district-hunza" element={<DistrictHunzaCulture />} />
