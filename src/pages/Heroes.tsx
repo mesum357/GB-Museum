@@ -1,12 +1,48 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Award, Users, Calendar } from "lucide-react";
+import { Award } from "lucide-react";
 import HeroSlider from "@/components/shared/HeroSlider";
 import HeroCard from "@/components/shared/HeroCard";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { heroes } from "@/data/heroes";
+import { heroes as fallbackHeroes, Hero } from "@/data/heroes";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 const Heroes = () => {
+  const [heroes, setHeroes] = useState<Hero[]>(fallbackHeroes);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHeroes = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/heroes?limit=100`);
+        const data = await response.json();
+        if (data.success && data.data.length > 0) {
+          // Map API data to Hero interface
+          const apiHeroes: Hero[] = data.data.map((h: any) => ({
+            id: h._id,
+            name: h.name,
+            title: h.title,
+            lifespan: h.lifespan,
+            bio: h.bio,
+            excerpt: h.excerpt,
+            thumbnail: h.thumbnail,
+            images: h.images,
+            achievements: h.achievements,
+            category: h.category,
+          }));
+          setHeroes(apiHeroes);
+        }
+      } catch (error) {
+        console.log('Using fallback heroes data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHeroes();
+  }, []);
 
   return (
     <div>
@@ -22,7 +58,7 @@ const Heroes = () => {
           >
             <h2>Our Heroes</h2>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-              These exceptional individuals left an indelible mark on Gilgit-Baltistan through their 
+              These exceptional individuals left an indelible mark on Gilgit-Baltistan through their
               courage, vision, and unwavering dedication to their people.
             </p>
           </motion.div>
@@ -70,7 +106,7 @@ const Heroes = () => {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    
+
                     {/* Title Overlay */}
                     <div className="absolute bottom-4 left-4 right-4 text-white">
                       <h3 className="font-bold text-lg leading-tight mb-1">
@@ -79,8 +115,8 @@ const Heroes = () => {
                       <p className="text-sm text-white/90 font-medium">
                         {hero.title}
                       </p>
-              </div>
-            </div>
+                    </div>
+                  </div>
 
                   {/* Card Content */}
                   <div className="p-4 space-y-3">
@@ -91,7 +127,7 @@ const Heroes = () => {
                       <span className="text-xs text-muted-foreground">
                         {hero.lifespan}
                       </span>
-            </div>
+                    </div>
 
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       {hero.excerpt}
@@ -104,8 +140,8 @@ const Heroes = () => {
                   </div>
                 </Card>
               </motion.div>
-                ))}
-              </div>
+            ))}
+          </div>
 
           {/* Summary Stats */}
           <motion.div
@@ -144,9 +180,8 @@ const Heroes = () => {
               </div>
             </Card>
           </motion.div>
-          </div>
+        </div>
       </section>
-
     </div>
   );
 };
