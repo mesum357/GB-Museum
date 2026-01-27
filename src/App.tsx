@@ -26,8 +26,8 @@ import DistrictSkarduCulture from "./pages/culture/DistrictSkarduCulture";
 import SilkRoute from "./pages/SilkRoute";
 import Library from "./pages/Library";
 import Blogs from "./pages/Blogs";
-import VirtualExperience from "./pages/VirtualExperience";
 import Gallery from "./pages/Gallery";
+
 import Polo from "./pages/history/Polo";
 import SilkRouteHistory from "./pages/history/SilkRouteHistory";
 import Modern from "./pages/history/Modern";
@@ -119,8 +119,8 @@ const AppContent = () => {
           <Route path="/silk-route" element={<SilkRoute />} />
           <Route path="/library" element={<Library />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/virtual-experience" element={<VirtualExperience />} />
           <Route path="/gallery" element={<Gallery />} />
+
           <Route path="/history/polo" element={<Polo />} />
           <Route path="/history/silk-route" element={<SilkRouteHistory />} />
           <Route path="/history/modern" element={<Modern />} />
