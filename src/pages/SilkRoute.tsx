@@ -10,7 +10,7 @@ const SilkRoute = () => {
       <Hero
         title="The Ancient Silk Route"
         subtitle="Where East Meets West: A Journey Through Time and Trade"
-        image="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=1920&h=1080&fit=crop"
+        image="/assets/img/silkroad.jfif"
       />
 
       {/* Introduction Section */}
@@ -26,17 +26,17 @@ const SilkRoute = () => {
             <p className="text-muted-foreground text-center mb-8">
               For over two millennia, Gilgit-Baltistan has served as a vital link on the legendary Silk Route
             </p>
-            
+
             <Card className="p-8 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
               <p className="text-foreground leading-relaxed mb-4">
-                The Silk Route wasn't merely a trade corridor—it was a conduit for ideas, religions, art, 
-                and technology. Gilgit-Baltistan's strategic location at the convergence of major trade routes 
-                made it a melting pot of cultures, where merchants, monks, and scholars from China, Persia, 
+                The Silk Route wasn't merely a trade corridor—it was a conduit for ideas, religions, art,
+                and technology. Gilgit-Baltistan's strategic location at the convergence of major trade routes
+                made it a melting pot of cultures, where merchants, monks, and scholars from China, Persia,
                 Central Asia, and the Indian subcontinent met and exchanged goods and knowledge.
               </p>
               <p className="text-foreground leading-relaxed">
-                Caravans laden with Chinese silk, Indian spices, Central Asian horses, and Persian carpets 
-                traversed these treacherous mountain passes. Buddhist pilgrims journeyed here to study sacred 
+                Caravans laden with Chinese silk, Indian spices, Central Asian horses, and Persian carpets
+                traversed these treacherous mountain passes. Buddhist pilgrims journeyed here to study sacred
                 texts, leaving behind magnificent rock carvings and monasteries that still dot our landscape today.
               </p>
             </Card>

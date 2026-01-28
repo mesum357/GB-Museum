@@ -10,7 +10,7 @@ export const poloHistory: HistoryEvent[] = [
     date: "6th Century BCE",
     title: "Origins of Mountain Polo",
     body: "The ancient game of polo originated in the mountainous regions of Central Asia, with Gilgit-Baltistan being one of its earliest homes. Warriors and nobility played the game as both sport and military training.",
-    images: ["https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=400&h=300&fit=crop"]
+    images: ["/assets/img/polo2.jpg"]
   },
   {
     date: "15th-17th Century",
@@ -21,7 +21,7 @@ export const poloHistory: HistoryEvent[] = [
     date: "1936",
     title: "Shandur Polo Festival Established",
     body: "The legendary Shandur Polo Festival was officially established at the world's highest polo ground (12,200 feet). This annual event became a symbol of cultural pride and attracted visitors from around the world.",
-    images: ["https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=400&h=300&fit=crop"]
+    images: ["/assets/img/polo3.jpg"]
   },
   {
     date: "Present Day",
@@ -35,7 +35,7 @@ export const silkRouteHistory: HistoryEvent[] = [
     date: "2nd Century BCE",
     title: "Ancient Trade Networks Emerge",
     body: "Gilgit-Baltistan became a crucial junction on the ancient Silk Route, connecting China, Central Asia, and the Indian subcontinent. Caravans carrying silk, spices, precious stones, and ideas passed through these mountain valleys.",
-    images: ["https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=400&h=300&fit=crop"]
+    images: ["/assets/img/silkroad2.jpg"]
   },
   {
     date: "5th-7th Century CE",
@@ -51,7 +51,7 @@ export const silkRouteHistory: HistoryEvent[] = [
     date: "Modern Era",
     title: "Karakoram Highway",
     body: "The construction of the Karakoram Highway (KKH) in the 1960s-70s revived the ancient Silk Route. Today, the KKH serves as a vital trade and tourism corridor, connecting Pakistan with China and beyond.",
-    images: ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"]
+    images: ["/assets/img/silkroad3.webp"]
   }
 ];
 
@@ -60,12 +60,13 @@ export const liberationWarHistory: HistoryEvent[] = [
     date: "October 1947",
     title: "Beginning of the Struggle",
     body: "Local forces, led by brave freedom fighters, initiated the liberation movement against the oppressive rule. The Gilgit Scouts, under Colonel Hassan Khan, played a pivotal role in organizing the resistance.",
+    images: ["/assets/img/liberation3.jpg"]
   },
   {
     date: "November 1, 1947",
     title: "Declaration of Independence",
     body: "On November 1, 1947, the people of Gilgit-Baltistan declared their independence and chose to accede to Pakistan. This momentous decision was the culmination of brave sacrifices by local leaders and fighters.",
-    images: ["https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400&h=300&fit=crop"]
+    images: ["/assets/img/liberation2.jpg"]
   },
   {
     date: "1947-1948",

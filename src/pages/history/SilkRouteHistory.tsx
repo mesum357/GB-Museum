@@ -8,7 +8,7 @@ const SilkRouteHistory = () => {
       <Hero
         title="Silk Route History"
         subtitle="The Ancient Trade Network Through Gilgit-Baltistan"
-        image="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=1920&h=1080&fit=crop"
+        image="/assets/img/silkroad.jfif"
       />
 
       <section className="py-16 px-4 bg-background">
