@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Hero from "@/components/shared/Hero";
+import PageHeroSlider from "@/components/shared/PageHeroSlider";
 import { Card } from "@/components/ui/card";
 import ImageSlider from "@/components/shared/ImageSlider";
 
@@ -110,12 +110,19 @@ century AD.`;
     },
   ];
 
+  const heroSlides = [
+    { image: heritageAttractions[0].images[0], label: heritageAttractions[0].title },
+    { image: heritageAttractions[3].images[0], label: heritageAttractions[3].title },
+    { image: heritageAttractions[7].images[0], label: heritageAttractions[7].title },
+    { image: heritageAttractions[10].images[0], label: heritageAttractions[10].title },
+  ];
+
   return (
     <div>
-      <Hero
+      <PageHeroSlider
         title="District Nagar — Culture & Tradition"
         subtitle={heroParagraph}
-        image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
+        slides={heroSlides}
       />
 
       {/* Heritage and Attractions */}

@@ -101,8 +101,56 @@ const sections: HistorySection[] = [
         description:
           "In 1890, tensions arose when the British reinforced Chalt Fort (located near Guru Jaglot) and started improving the road leading to it. In May 1891, representatives from Nagar and Hunza demanded the British to cease roadwork and withdraw from the Fort. However, Algernon Durand continued the fort's reinforcement and accelerated road construction. Nagar and Hunza viewed Durand's actions as an escalation and blocked mail from the British Resident in Chinese Turkmenistan from passing through their territory. British Government interpreted this as a violation of the 1889 agreement with Hunza (in which Hunza accepted suzerainty of the British). After issuing an ultimatum which was ignored, British initiated the Anglo-Brusho Campaign of 1891.",
         images: [
-          { src: "/assets/img/modern/british5.png" },
+          { src: "/assets/img/modern/sikh6.png", caption: "Anglo-Brusho Campaign of 1891" },
         ],
+      },
+    ],
+  },
+
+  /* ═══════════ 4 — RESISTANCE OF MIR AZUR KHAN ═══════════ */
+  {
+    heading: "THE RESISTANCE OF MIR AZUR KHAN OF NAGAR",
+    description:
+      "The Anglo-Brusho war was a battle fought by British Raj and people of Nagar and Hunza in the area of Nilt (1 Dec - 23 Dec 1891). The forces of Nagar and Hunza were led by Mir Azur Khan of Nagar. During the war, the British were victorious and gained control of Nagar and its Forts (Nilt, Thol and Mahun Fort). After the battle, Mir Azur Khan fled to Xinjiang (China). He was later apprehended by the Chinese and handed over to British who imprisoned him in Srinagar. After Anglo-Brusho War, the region came under British control, however a degree of autonomy was given to Mirs of Hunza and Nagar since they pledged their loyalty to the British Government.",
+    items: [
+      {
+        title: "Mir Azur Khan & The Forts of Nagar",
+        description: "",
+        images: [
+          { src: "/assets/img/modern/sikh7.png", caption: "Mir Azur Khan" },
+          { src: "/assets/img/modern/sikh8.png", caption: "Nilt , Thol and Mahun Forts" },
+        ],
+      },
+    ],
+  },
+
+  /* ═══════════ 5 — POST ANGLO-BRUSHO WAR ERA ═══════════ */
+  {
+    heading: "POST ANGLO - BRUSHO WAR ERA",
+    description:
+      "In the early 1900s, the British constructed an all weather pony track connecting Gilgit to Skardu. This construction was aimed to improve access to Gilgit Agency for trade and communication purpose. However, Baltistan remained under independent Political and Administrative Control of Dogras. In 1935, fearing the Russian activities in Chinese Xinjiang Region, the British Government made an agreement with Maharaja Hari Singh under which Gilgit Wazarat was leased to the British Government of India for a period of sixty years. This gave the British Political Agent complete control of Defence, Communication and Foreign Relations while the Wazir-e-Wazarat retained Civil Administration of entire region.",
+    items: [
+      {
+        title: "Gilgit - Skardu Pony Track",
+        description: "",
+        images: [
+          { src: "/assets/img/modern/sikh9.png", caption: "Gilgit - Skardu Pony Track in 1900" },
+        ],
+      },
+      {
+        title: "Declining British Influence",
+        description:
+          "After World War II (1939-1945), the British influence in Gilgit Baltistan region started to decline. At the time of partition of Indian subcontinent, Gilgit Baltistan was part of Princely State of Jammu and Kashmir. The Tehsils of Gilgit and Astore were part of Gilgit Wazarat, while Tehsils of Skardu and Kargil were part of Ladakh Wazarat. The British gave an option to the princely states as per 3rd June 1947 Plan; to join either the State of India or Pakistan and terminated the lease of Gilgit on 1st August 1947. The obvious choice of the people of this region was to join State of Pakistan and expected Maharaja to respect this choice. Gilgit Scouts intimated popular demand of the people to Major William Brown, Commander Gilgit Scouts, who accepted it as a justified demand and played a pivotal role in the initiation of Liberation war.",
+        images: [
+          { src: "/assets/img/modern/sikh10.png", caption: "Map of Princely State of Jammu and Kashmir - 1946" },
+          { src: "/assets/img/modern/sikh11.png", caption: "The Making of Frontier by Algeron Durand History of Northern Areas of Pakistan. A.H.Dani The Gilgit Rebellion 1947, Brown" },
+        ],
+      },
+      {
+        title: "Major William A. Brown — Commanding Officer, Gilgit Scouts during 1947",
+        description:
+          "The Last British Political Agent, Lieutenant Colonel Bacon bid farewell to the Mirs and Rajas at Gilgit. From Left: Captain Babar Khan, Jafar Khan (Raja of Gilgit), Sultan Ghazi (Raja of Ishkoman), Major Brown, Hussain Ali (Raja of Gopis), Anwar Khan (Raja of Punial), Raja of Yasin, Lieutenant Colonel Bacon, F. Mainpierce, Jamal Khan (Mir of Hunza).",
+        images: [],
       },
     ],
   },
@@ -184,10 +232,10 @@ const Modern = () => {
                     viewport={{ once: true, margin: "-60px" }}
                     variants={fadeUp}
                     className={`flex flex-col ${hasText && hasImages
-                        ? isReversed
-                          ? "lg:flex-row-reverse"
-                          : "lg:flex-row"
-                        : ""
+                      ? isReversed
+                        ? "lg:flex-row-reverse"
+                        : "lg:flex-row"
+                      : ""
                       } gap-10 items-center`}
                   >
                     {/* Text block */}
@@ -219,12 +267,12 @@ const Modern = () => {
 
                         <div
                           className={`grid gap-4 ${item.images.length === 1
-                              ? "grid-cols-1"
-                              : item.images.length === 2
-                                ? "grid-cols-1 sm:grid-cols-2"
-                                : item.images.length === 3
-                                  ? "grid-cols-1 sm:grid-cols-3"
-                                  : "grid-cols-2"
+                            ? "grid-cols-1"
+                            : item.images.length === 2
+                              ? "grid-cols-1 sm:grid-cols-2"
+                              : item.images.length === 3
+                                ? "grid-cols-1 sm:grid-cols-3"
+                                : "grid-cols-2"
                             }`}
                         >
                           {item.images.map((img, imgIdx) => (

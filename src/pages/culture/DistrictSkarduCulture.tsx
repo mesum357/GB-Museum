@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Hero from "@/components/shared/Hero";
+import PageHeroSlider from "@/components/shared/PageHeroSlider";
 import { Card } from "@/components/ui/card";
 import ImageSlider from "@/components/shared/ImageSlider";
 
@@ -95,12 +95,19 @@ const DistrictSkarduCulture = () => {
 
   const heroParagraph = `District Skardu is located at the confluence of\nIndus and Shiger rivers. Skardu is primarily\ninhabited by Balti people, with influences from\nTibetan Buddhist and Islamic traditions.\nMaqpon Ruler, Bo kha established the city of\nSkardu as his capital in 1500 AD. First known\nsigns of civilization in Skardu region date back\nto 4th century AD (Tibetan Empire).`;
 
+  const heroSlides = [
+    { image: heritageAttractions[0].images[0], label: heritageAttractions[0].title },
+    { image: heritageAttractions[2].images[0], label: heritageAttractions[2].title },
+    { image: heritageAttractions[8].images[0], label: heritageAttractions[8].title },
+    { image: heritageAttractions[12].images[0], label: heritageAttractions[12].title },
+  ];
+
   return (
     <div>
-      <Hero
+      <PageHeroSlider
         title="District Skardu — Culture & Tradition"
         subtitle={heroParagraph}
-        image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
+        slides={heroSlides}
       />
 
       {/* Heritage and Attractions */}

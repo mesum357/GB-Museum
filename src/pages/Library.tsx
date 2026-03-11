@@ -62,6 +62,13 @@ const bookCategories = [
   "Literature",
 ];
 
+const getImageUrl = (url: string) => {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('/uploads')) return `http://localhost:5000${url}`;
+  return url;
+};
+
 const Library = () => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -209,7 +216,7 @@ const Library = () => {
               >
                 <CardHeader className="p-0">
                   <img
-                        src={book.cover?.startsWith('http') ? book.cover : `http://localhost:5000${book.cover}`}
+                    src={getImageUrl(book.cover)}
                     alt={book.title}
                     className="w-full h-64 object-cover rounded-t-lg"
                   />
@@ -265,7 +272,7 @@ const Library = () => {
             <div className="space-y-6">
               <div className="flex gap-6">
                 <img
-                  src={displayBook.cover?.startsWith('http') ? displayBook.cover : `http://localhost:5000${displayBook.cover}`}
+                  src={getImageUrl(displayBook.cover)}
                   alt={displayBook.title}
                   className="w-48 h-72 object-cover rounded-lg shrink-0"
                 />

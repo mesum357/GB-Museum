@@ -1,44 +1,110 @@
 import { motion } from "framer-motion";
-import Hero from "@/components/shared/Hero";
-import Timeline from "@/components/shared/Timeline";
-import { Card } from "@/components/ui/card";
-import { poloHistory } from "@/data/history";
+import PageHeroSlider from "@/components/shared/PageHeroSlider";
+
+const sections = [
+  {
+    title: "Ancient Origins",
+    texts: [
+      "Polo is one of the oldest team sport which originated from Persia and subsequently spread eastwards to present day Gilgit-Baltistan. It is a Balti word, meaning “Ball”.",
+      "The progenitor of Polo and its variants existed from 600 BC to 1st century AD. First recorded Polo tournament was played between Turkomans and Persians in 600 BC.",
+      "Initially, Polo was a training game for cavalry units, often played by royal guards and military elites. The game spread from Persia to Indian Subcontinent, China and Japan. Out of 100 member countries in International Polo Federation, presently it is being played in 16 countries.",
+    ],
+    images: ["/assets/img/polo/polo2.png", "/assets/img/polo/polo3.png"]
+  },
+  {
+    title: "The Free Style 'Balti Loshor'",
+    texts: [
+      "Polo in Gilgit-Baltistan and Chitral has a unique style that distinguishes it from international form of the game. The free style Polo, known as \"Balti Loshor\" is played with fewer rules and regulations as compared to international Polo. It is characterized by its fast-pace and aggressive nature.",
+      "In Gilgit-Baltistan, it is believed to have an ancient origins with local traditions dating back several centuries. It is considered the original home of game in its most rugged and untamed form.",
+      "The rugged terrain and abundance of the horses in the region made it an ideal place for the sport to flourish."
+    ],
+    images: ["/assets/img/polo/polo4.png", "/assets/img/polo/polo5.png"]
+  },
+  {
+    title: "Culture and Diplomacy",
+    texts: [
+      "Historically, the game was played and flourished by the ruling elites of various princely states of the regions including Hunza, Nagar, Gilgit and Chitral. It served as a recreational activity, demonstration of horsemen ship and marshal prowess.",
+      "Polo matches in Gilgit-Baltistan were not just a sport but also a way to resolve the disputes and conflicts between different communities. The matches were often organized as friendly competitions serving as a platform to socialize. Polo has become an important cultural symbol of Gilgit-Baltistan and continues to be cherished by the local community."
+    ],
+    images: ["/assets/img/polo/polo6.png", "/assets/img/polo/polo7.png"]
+  },
+  {
+    title: "Mughal and British Eras",
+    texts: [
+      "Polo was introduced in Indian Subcontinent by muslim conquerors and flourished rapidly under the Mughal Empire. The game was played by the emperors, often with pomp and ceremony.",
+      "In 19th century, British also played a significant role in development of Polo and introduced it as a means of recreation and training of soldiers. They established first Polo Club in Silchar, Asam in 1859."
+    ],
+    images: ["/assets/img/polo/polo8.png"]
+  }
+];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+};
 
 const Polo = () => {
   return (
     <div>
-      <Hero
-        title="Polo: The Game of Kings"
-        subtitle="Centuries of Tradition on the World's Highest Polo Ground"
-        image="/assets/img/polo.jpg"
+      <PageHeroSlider
+        title="HISTORY OF POLO"
+        subtitle="“The Game of Kings and King of Games”"
+        slides={[
+          { image: "/assets/img/polo/polo1.png", label: "History of Polo" }
+        ]}
       />
 
+      <div className="bg-background py-16 px-4">
+        <div className="container mx-auto max-w-6xl space-y-24">
+          {sections.map((section, idx) => (
+            <motion.div
+              key={idx}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeUp}
+              className={`flex flex-col gap-12 items-center ${
+                idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+              }`}
+            >
+              {/* Text */}
+              <div className="lg:w-1/2 space-y-6">
+                <h2 className="text-3xl font-bold text-primary mb-4 border-b-2 border-primary/20 pb-2 inline-block">
+                  {section.title}
+                </h2>
+                <div className="space-y-4">
+                  {section.texts.map((text, tIdx) => (
+                    <p key={tIdx} className="text-foreground/80 leading-relaxed text-lg">
+                      {text}
+                    </p>
+                  ))}
+                </div>
+              </div>
 
-      <section className="py-16 px-4 bg-background">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Card className="p-8 mb-12 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
-              <h2 className="text-center text-primary mb-6">A Living Tradition</h2>
-              <p className="text-foreground leading-relaxed mb-4">
-                Polo in Gilgit-Baltistan is far more than a sport—it's a living connection to our ancestral heritage.
-                Known locally as the "game of kings," polo has been played in these mountain valleys for over two millennia,
-                with roots stretching back to ancient Persia and Central Asia.
-              </p>
-              <p className="text-foreground leading-relaxed">
-                The Shandur Polo Ground, perched at 12,200 feet above sea level, hosts the world's highest polo tournament
-                annually. Here, teams from Gilgit and Chitral compete in a thrilling spectacle that draws thousands of spectators
-                and preserves centuries-old traditions of horsemanship, strategy, and community pride.
-              </p>
-            </Card>
-
-            <Timeline events={poloHistory} />
-          </motion.div>
+              {/* Images */}
+              <div className="lg:w-1/2 w-full">
+                <div className={`grid gap-4 ${section.images.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                  {section.images.map((img, imgIdx) => (
+                    <motion.div
+                      key={imgIdx}
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden rounded-2xl shadow-lg border border-border/40"
+                    >
+                      <img
+                        src={img}
+                        alt={"Polo " + section.title}
+                        className="w-full h-full object-cover min-h-[250px]"
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 };

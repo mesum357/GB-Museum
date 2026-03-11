@@ -37,6 +37,13 @@ interface Comment {
   status: "pending" | "approved" | "rejected";
 }
 
+const getImageUrl = (url: string) => {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('/uploads')) return `http://localhost:5000${url}`;
+  return url;
+};
+
 const Blogs = () => {
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
@@ -275,7 +282,7 @@ const Blogs = () => {
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                     <CardHeader className="p-0">
                       <img
-                        src={post.image}
+                        src={getImageUrl(post.image)}
                         alt={post.title}
                         className="w-full h-64 md:h-80 object-cover cursor-pointer"
                         onClick={() => handleViewBlog(post)}
@@ -382,7 +389,7 @@ const Blogs = () => {
         {selectedBlog && (
           <div className="space-y-6">
             <img
-              src={selectedBlog.image}
+              src={getImageUrl(selectedBlog.image)}
               alt={selectedBlog.title}
               className="w-full h-96 object-cover rounded-lg"
             />

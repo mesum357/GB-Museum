@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Hero from "@/components/shared/Hero";
+import PageHeroSlider from "@/components/shared/PageHeroSlider";
 import { Card } from "@/components/ui/card";
 import ImageSlider from "@/components/shared/ImageSlider";
 
@@ -95,12 +95,19 @@ const DistrictAstoreCulture = () => {
     },
   ];
 
+  const heroSlides = [
+    { image: heritageAttractions[1].images[0], label: heritageAttractions[1].title },
+    { image: heritageAttractions[5].images[0], label: heritageAttractions[5].title },
+    { image: cultureItems[0].images[0], label: cultureItems[0].title },
+    { image: floraFaunaItems[0].images[0], label: floraFaunaItems[0].title },
+  ];
+
   return (
     <div>
-      <Hero
+      <PageHeroSlider
         title="District Astore — Culture & Tradition"
         subtitle={heroParagraph}
-        image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
+        slides={heroSlides}
       />
 
       {/* Heritage and Attractions */}
