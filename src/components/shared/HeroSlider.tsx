@@ -117,12 +117,12 @@ const HeroSlider = ({ heroes }: HeroSliderProps) => {
                   transition={{ duration: 0.5 }}
                   className="absolute inset-0"
                 >
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-full bg-muted/50">
                     {/* Hero Image */}
                     <img
                       src={hero.thumbnail}
                       alt={hero.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain object-center"
                     />
                     
                     {/* Overlay Gradient */}

@@ -53,7 +53,7 @@ const HeroCard = ({ hero, index }: HeroCardProps) => {
             alt={hero.name}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
-            className={`w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 ${
+            className={`w-full h-full object-contain object-center transition-all duration-500 group-hover:scale-105 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           />

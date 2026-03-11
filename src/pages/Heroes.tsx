@@ -99,11 +99,11 @@ const Heroes = () => {
               >
                 <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
                   {/* Hero Image */}
-                  <div className="relative aspect-square overflow-hidden">
+                  <div className="relative aspect-square overflow-hidden bg-muted/50">
                     <img
                       src={hero.thumbnail}
                       alt={hero.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
