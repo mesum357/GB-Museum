@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
+import ScrollToTop from "@/components/shared/ScrollToTop";
 import Home from "./pages/Home";
 import Heroes from "./pages/Heroes";
 import DistrictGilgit from "./pages/DistrictGilgit";
@@ -148,6 +149,7 @@ const App = () => {
               v7_relativeSplatPath: true,
             }}
           >
+            <ScrollToTop />
             <AppContent />
           </BrowserRouter>
         </SidebarProvider>
