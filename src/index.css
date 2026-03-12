@@ -8,9 +8,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* GB Museum Design System - Based on GB IT Vision */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 13%;
+    /* GB Museum Design System - Museum Aesthetic Theme */
+    --background: 35 30% 96%; /* Warm parchment/beige */
+    --foreground: 20 40% 15%; /* Dark sepia/brown */
     
     /* Primary: Deep Green #007133 */
     --primary: 150 100% 22%;
@@ -24,33 +24,33 @@ All colors MUST be HSL.
     --secondary: 240 51% 38%;
     --secondary-foreground: 0 0% 100%;
     
-    /* Muted Gray #f5f6f7 */
-    --muted: 210 14% 97%;
-    --muted-foreground: 0 0% 42%;
+    /* Muted Warm Gray/Beige */
+    --muted: 35 20% 90%;
+    --muted-foreground: 20 20% 40%;
     
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card: 35 40% 98%;
+    --card-foreground: 20 40% 15%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover: 35 40% 98%;
+    --popover-foreground: 20 40% 15%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 210 14% 91%;
-    --input: 210 14% 91%;
+    --border: 35 20% 86%;
+    --input: 35 20% 86%;
     --ring: 150 100% 22%;
     
     --radius: 0.5rem;
     
-    /* Sidebar */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 13%;
+    /* Sidebar - Museum Theme */
+    --sidebar-background: 35 30% 96%; /* Matches main background */
+    --sidebar-foreground: 20 40% 15%; /* Matches main foreground */
     --sidebar-primary: 150 100% 22%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 14% 97%;
-    --sidebar-accent-foreground: 0 0% 13%;
-    --sidebar-border: 210 14% 91%;
+    --sidebar-accent: 35 25% 92%; /* Slightly darker beige on hover */
+    --sidebar-accent-foreground: 20 50% 10%; /* Darker brown on hover */
+    --sidebar-border: 35 20% 86%; /* Matches main border */
     --sidebar-ring: 150 100% 22%;
   }
 }

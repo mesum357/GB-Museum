@@ -52,9 +52,19 @@ const introImages = [
     subtitle: "Modern History"
   },
   {
-    src: "/assets/img/polo/polo5.png",
+    src: "/assets/img/polo/poloi.jpg",
     title: "The Game of Kings",
     subtitle: "Polo"
+  },
+  {
+    src: "/assets/img/polo/poloiv.jpg",
+    title: "Balti Loshor",
+    subtitle: "Free Style Polo"
+  },
+  {
+    src: "/assets/img/polo/poloviii.jpg",
+    title: "Culture and Diplomacy",
+    subtitle: "Polo Matches"
   },
   {
     src: "/assets/img/heroes/sherhero.jpg",
@@ -134,11 +144,7 @@ const Home = () => {
       <Hero
         title="Welcome to GB Museum"
         subtitle="Preserving the Rich Heritage and Culture of Gilgit-Baltistan"
-        image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
-        cta={{
-          text: "Explore Our Collections",
-          onClick: scrollToContent
-        }}
+        image="/assets/img/gbmuseum.jpeg"
       />
 
       {/* Introduction Section */}

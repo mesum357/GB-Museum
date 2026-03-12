@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { ChevronDown, Menu, X, Home, Users, MapPin, History, BookOpen, FileText, Glasses, Images, Landmark, Sword, Building2, Route, Trophy, type LucideIcon } from "lucide-react";
+import { ChevronDown, Menu, X, Home, Users, MapPin, History, BookOpen, FileText, Glasses, Images, Landmark, Sword, Building2, Route, Trophy, Building, MountainSnow, Trees, Waves, Tent, Castle, Mountain, type LucideIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -32,13 +32,13 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   ];
 
   const cultureItems = [
-    { title: "District Gilgit", url: "/culture/district-gilgit" },
-    { title: "District Astore", url: "/culture/district-astore" },
-    { title: "District Nagar", url: "/culture/district-nagar" },
-    { title: "District Ghizer", url: "/culture/district-ghizer" },
-    { title: "District Diamer", url: "/culture/district-diamer" },
-    { title: "District Hunza", url: "/culture/district-hunza" },
-    { title: "District Skardu", url: "/culture/district-skardu" },
+    { title: "District Gilgit", url: "/culture/district-gilgit", icon: Building },
+    { title: "District Astore", url: "/culture/district-astore", icon: MountainSnow },
+    { title: "District Nagar", url: "/culture/district-nagar", icon: Trees },
+    { title: "District Ghizer", url: "/culture/district-ghizer", icon: Waves },
+    { title: "District Diamer", url: "/culture/district-diamer", icon: Tent },
+    { title: "District Hunza", url: "/culture/district-hunza", icon: Castle },
+    { title: "District Skardu", url: "/culture/district-skardu", icon: Mountain },
   ];
 
 
@@ -234,12 +234,13 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
                           to={item.url}
                           className={({ isActive }) =>
                             cn(
-                              "block px-3 py-2 rounded-md text-sm transition-colors",
+                              "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors",
                               "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                               isActive && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
                             )
                           }
                         >
+                          <item.icon className="h-4 w-4 flex-shrink-0" />
                           {item.title}
                         </NavLink>
                       </li>

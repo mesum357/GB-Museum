@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import PageHeroSlider from "@/components/shared/PageHeroSlider";
+import ImagePreviewModal from "@/components/shared/ImagePreviewModal";
 
 const sections = [
   {
@@ -9,7 +11,7 @@ const sections = [
       "The progenitor of Polo and its variants existed from 600 BC to 1st century AD. First recorded Polo tournament was played between Turkomans and Persians in 600 BC.",
       "Initially, Polo was a training game for cavalry units, often played by royal guards and military elites. The game spread from Persia to Indian Subcontinent, China and Japan. Out of 100 member countries in International Polo Federation, presently it is being played in 16 countries.",
     ],
-    images: ["/assets/img/polo/polo2.png", "/assets/img/polo/polo3.png"]
+    images: ["/assets/img/polo/poloii.jpg", "/assets/img/polo/poloiii.jpg"]
   },
   {
     title: "The Free Style 'Balti Loshor'",
@@ -18,7 +20,7 @@ const sections = [
       "In Gilgit-Baltistan, it is believed to have an ancient origins with local traditions dating back several centuries. It is considered the original home of game in its most rugged and untamed form.",
       "The rugged terrain and abundance of the horses in the region made it an ideal place for the sport to flourish."
     ],
-    images: ["/assets/img/polo/polo4.png", "/assets/img/polo/polo5.png"]
+    images: ["/assets/img/polo/poloiv.jpg", "/assets/img/polo/polovi.jpg"]
   },
   {
     title: "Culture and Diplomacy",
@@ -26,7 +28,7 @@ const sections = [
       "Historically, the game was played and flourished by the ruling elites of various princely states of the regions including Hunza, Nagar, Gilgit and Chitral. It served as a recreational activity, demonstration of horsemen ship and marshal prowess.",
       "Polo matches in Gilgit-Baltistan were not just a sport but also a way to resolve the disputes and conflicts between different communities. The matches were often organized as friendly competitions serving as a platform to socialize. Polo has become an important cultural symbol of Gilgit-Baltistan and continues to be cherished by the local community."
     ],
-    images: ["/assets/img/polo/polo6.png", "/assets/img/polo/polo7.png"]
+    images: ["/assets/img/polo/polovii.jpg", "/assets/img/polo/poloviii.jpg"]
   },
   {
     title: "Mughal and British Eras",
@@ -34,7 +36,7 @@ const sections = [
       "Polo was introduced in Indian Subcontinent by muslim conquerors and flourished rapidly under the Mughal Empire. The game was played by the emperors, often with pomp and ceremony.",
       "In 19th century, British also played a significant role in development of Polo and introduced it as a means of recreation and training of soldiers. They established first Polo Club in Silchar, Asam in 1859."
     ],
-    images: ["/assets/img/polo/polo8.png"]
+    images: ["/assets/img/polo/poloi.jpg"]
   }
 ];
 
@@ -44,13 +46,14 @@ const fadeUp = {
 };
 
 const Polo = () => {
+  const [previewImage, setPreviewImage] = useState<{ src: string; caption?: string } | null>(null);
   return (
     <div>
       <PageHeroSlider
         title="HISTORY OF POLO"
         subtitle="“The Game of Kings and King of Games”"
         slides={[
-          { image: "/assets/img/polo/polo1.png", label: "History of Polo" }
+          { image: "/assets/img/polo/poloi.jpg", label: "History of Polo" }
         ]}
       />
 
@@ -89,12 +92,13 @@ const Polo = () => {
                       key={imgIdx}
                       whileHover={{ scale: 1.03 }}
                       transition={{ duration: 0.3 }}
-                      className="overflow-hidden rounded-2xl shadow-lg border border-border/40"
+                      className="overflow-hidden rounded-2xl shadow-lg border border-border/40 cursor-pointer flex flex-col h-full"
+                      onClick={() => setPreviewImage({ src: img, caption: section.title })}
                     >
                       <img
                         src={img}
                         alt={"Polo " + section.title}
-                        className="w-full h-full object-cover min-h-[250px]"
+                        className="w-full h-full object-cover flex-1 min-h-[250px]"
                         loading="lazy"
                       />
                     </motion.div>
@@ -105,6 +109,14 @@ const Polo = () => {
           ))}
         </div>
       </div>
+
+      {/* Image Preview Modal */}
+      <ImagePreviewModal
+        isOpen={!!previewImage}
+        onClose={() => setPreviewImage(null)}
+        imageSrc={previewImage?.src || null}
+        caption={previewImage?.caption}
+      />
     </div>
   );
 };

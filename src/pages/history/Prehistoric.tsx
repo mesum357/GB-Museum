@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import PageHeroSlider from "@/components/shared/PageHeroSlider";
+import ImagePreviewModal from "@/components/shared/ImagePreviewModal";
 
 /* ──────────────────── data ──────────────────── */
 
@@ -37,13 +39,7 @@ const sections: HistorySection[] = [
           "During the Middle Stone Age, game animals like ibexes, markhor, blue sheep and red deer were abundant. The carvings of animals with a belt-like division over their middle is characteristic of images found in South-Eastern Turkey at Gobekli Tepe, dating back to the 10th millennium BC.",
         images: ["/assets/img/Prehistoric/Bluesheep2.png"],
       },
-      {
-        title:
-          "Hunting Scene with Two Blue Sheep, a Hunter and Handprint, Dadam Das, Diamer",
-        description:
-          "This environment with its rich variety of wild animals attracted groups of hunter-gatherers who penetrated into the mountain valleys. The hunter's presence is seen in prints of hands and feet as well as gural carvings of men. Similar carvings have been found in Central Asia, Siberia, and the Caucasus.",
-        images: ["/assets/img/Prehistoric/hunting scene.png"],
-      },
+
       {
         title:
           "Rock Carvings Depicting Hunting Scene of Late Stone Age, Thor North, Diamer",
@@ -185,6 +181,7 @@ const fadeUp = {
 /* ──────────────── component ──────────────── */
 
 const Prehistoric = () => {
+  const [previewImage, setPreviewImage] = useState<{ src: string; caption?: string } | null>(null);
   // Build hero slides from each section's first available image
   const heroSlides = sections
     .map((s) => {
@@ -293,12 +290,13 @@ const Prehistoric = () => {
                             key={imgIdx}
                             whileHover={{ scale: 1.03 }}
                             transition={{ duration: 0.3 }}
-                            className="overflow-hidden rounded-2xl shadow-lg border border-border/40"
+                            className="overflow-hidden rounded-2xl shadow-lg border border-border/40 cursor-pointer flex flex-col h-full"
+                            onClick={() => setPreviewImage({ src: img, caption: item.title })}
                           >
                             <img
                               src={img}
                               alt={item.title}
-                              className="w-full h-auto object-cover"
+                              className="w-full h-full flex-1 object-cover"
                               loading="lazy"
                             />
                           </motion.div>
@@ -312,6 +310,14 @@ const Prehistoric = () => {
           </div>
         </section>
       ))}
+
+      {/* Image Preview Modal */}
+      <ImagePreviewModal
+        isOpen={!!previewImage}
+        onClose={() => setPreviewImage(null)}
+        imageSrc={previewImage?.src || null}
+        caption={previewImage?.caption}
+      />
     </div>
   );
 };

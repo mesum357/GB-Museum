@@ -27,7 +27,9 @@ const Hero = ({ title, subtitle, image, cta }: HeroProps) => {
           alt=""
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background/90" />
+        {/* Darker overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-background/95" />
       </motion.div>
 
       {/* Content */}
@@ -37,7 +39,7 @@ const Hero = ({ title, subtitle, image, cta }: HeroProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-white drop-shadow-lg"
+            className="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] font-bold font-sans"
           >
             {title}
           </motion.h1>
@@ -46,7 +48,7 @@ const Hero = ({ title, subtitle, image, cta }: HeroProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-white/90 drop-shadow"
+            className="text-xl md:text-2xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-medium max-w-3xl mx-auto"
           >
             {subtitle}
           </motion.p>

@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "@/components/layout/Sidebar";
+import Footer from "@/components/layout/Footer";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import Home from "./pages/Home";
 import Heroes from "./pages/Heroes";
@@ -92,7 +93,7 @@ const AppContent = () => {
       )}
 
       <main
-        className="flex-1 transition-all duration-300"
+        className="flex-1 transition-all duration-300 flex flex-col min-h-screen"
         style={{
           // Only shift content on desktop when sidebar visible
           marginLeft: !isSmallScreen && !hideSidebar ? (sidebarCollapsed ? "64px" : "256px") : "0",
@@ -126,9 +127,9 @@ const AppContent = () => {
           <Route path="/history/modern" element={<Modern />} />
           <Route path="/history/liberation-war" element={<LiberationWar />} />
           <Route path="/history/prehistoric" element={<Prehistoric />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <Footer />
       </main>
     </div>
   );

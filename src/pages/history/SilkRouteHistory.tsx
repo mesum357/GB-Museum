@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import PageHeroSlider from "@/components/shared/PageHeroSlider";
+import ImagePreviewModal from "@/components/shared/ImagePreviewModal";
 
 /* ──────────────────── types ──────────────────── */
 
@@ -110,6 +112,7 @@ const fadeUp = {
 /* ──────────────── component ──────────────── */
 
 const SilkRouteHistory = () => {
+  const [previewImage, setPreviewImage] = useState<{ src: string; caption?: string } | null>(null);
   return (
     <div>
       <PageHeroSlider
@@ -212,12 +215,13 @@ const SilkRouteHistory = () => {
                               key={imgIdx}
                               whileHover={{ scale: 1.03 }}
                               transition={{ duration: 0.3 }}
-                              className="overflow-hidden rounded-2xl shadow-lg border border-border/40"
+                              className="overflow-hidden rounded-2xl shadow-lg border border-border/40 cursor-pointer flex flex-col h-full"
+                              onClick={() => setPreviewImage(img)}
                             >
                               <img
                                 src={img.src}
                                 alt={img.caption || item.title}
-                                className="w-full h-auto object-cover"
+                                className="w-full h-full flex-1 object-cover"
                                 loading="lazy"
                               />
                               {img.caption && (
@@ -237,6 +241,14 @@ const SilkRouteHistory = () => {
           </div>
         </section>
       ))}
+
+      {/* Image Preview Modal */}
+      <ImagePreviewModal
+        isOpen={!!previewImage}
+        onClose={() => setPreviewImage(null)}
+        imageSrc={previewImage?.src || null}
+        caption={previewImage?.caption}
+      />
     </div>
   );
 };
