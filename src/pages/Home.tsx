@@ -142,7 +142,7 @@ const Home = () => {
   return (
     <div>
       <Hero
-        title="Welcome to GB Museum"
+        title="Welcome to GB Museum & Library"
         subtitle="Preserving the Rich Heritage and Culture of Gilgit-Baltistan"
         image="/assets/img/gbmuseum.jpeg"
       />
