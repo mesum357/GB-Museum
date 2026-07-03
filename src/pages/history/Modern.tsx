@@ -89,7 +89,7 @@ const sections: HistorySection[] = [
           "The British Government of India established Gilgit Agency in 1877 and appointed John Biddulph as the first Political Agent. Lack of cooperation by the Maharajah's Wazire-Wazarat (Governor) in Gilgit with British Political Agent resulted in mutually agreed upon administrative division of Gilgit region. Maharaja's Governor ruled over the Gilgit Wazarat whereas the Political Agent governed Hunza, Nager, Punial, Ishkoman, Yasin, Koh-Ghizer and Chilas. The system of dual management created a lot of friction since the British Agents tried to establish their control over the Governor in managing the region. Due to frequent conflicts and change in orientation of British Frontier Politics, the Gilgit Agency was closed down in 1881.",
         images: [
           { src: "/assets/img/modern/british3.png", caption: "Map of Gilgit Wazarat" },
-          { src: "/assets/img/modern/british4.png", caption: "Colonel Algernon George Arnold Durand" },
+          { src: "/assets/img/modern/durand.jfif", caption: "Colonel Algernon George Arnold Durand" },
         ],
       },
       {

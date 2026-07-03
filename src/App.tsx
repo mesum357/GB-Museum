@@ -34,6 +34,7 @@ import Polo from "./pages/history/Polo";
 import SilkRouteHistory from "./pages/history/SilkRouteHistory";
 import Modern from "./pages/history/Modern";
 import LiberationWar from "./pages/history/LiberationWar";
+import SiachenKargilConflict from "./pages/history/SiachenKargilConflict";
 import Prehistoric from "./pages/history/Prehistoric";
 import NotFound from "./pages/NotFound";
 import { Button } from "@/components/ui/button";
@@ -127,6 +128,7 @@ const AppContent = () => {
           <Route path="/history/silk-route" element={<SilkRouteHistory />} />
           <Route path="/history/modern" element={<Modern />} />
           <Route path="/history/liberation-war" element={<LiberationWar />} />
+          <Route path="/history/siachen-kargil" element={<SiachenKargilConflict />} />
           <Route path="/history/prehistoric" element={<Prehistoric />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
