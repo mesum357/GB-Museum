@@ -33,6 +33,7 @@ import Gallery from "./pages/Gallery";
 import Polo from "./pages/history/Polo";
 import SilkRouteHistory from "./pages/history/SilkRouteHistory";
 import Modern from "./pages/history/Modern";
+import ModernHistory from "./pages/history/ModernHistory";
 import LiberationWar from "./pages/history/LiberationWar";
 import SiachenKargilConflict from "./pages/history/SiachenKargilConflict";
 import Prehistoric from "./pages/history/Prehistoric";
@@ -127,6 +128,7 @@ const AppContent = () => {
           <Route path="/history/polo" element={<Polo />} />
           <Route path="/history/silk-route" element={<SilkRouteHistory />} />
           <Route path="/history/modern" element={<Modern />} />
+          <Route path="/history/modern-history" element={<ModernHistory />} />
           <Route path="/history/liberation-war" element={<LiberationWar />} />
           <Route path="/history/siachen-kargil" element={<SiachenKargilConflict />} />
           <Route path="/history/prehistoric" element={<Prehistoric />} />

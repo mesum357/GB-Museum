@@ -28,6 +28,7 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
     { title: "GB Liberation War", url: "/history/liberation-war", icon: Sword },
     { title: "Siachen–Kargil Conflict", url: "/history/siachen-kargil", icon: MountainSnow },
     { title: "Modern History", url: "/history/modern", icon: Building2 },
+    { title: "Modern History", url: "/history/modern-history", icon: BookOpen },
     { title: "Silk Route", url: "/history/silk-route", icon: Route },
     { title: "History of Polo", url: "/history/polo", icon: Trophy },
   ];
