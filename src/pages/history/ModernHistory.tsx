@@ -205,7 +205,7 @@ const ModernHistory = () => {
   return (
     <div>
       <PageHeroSlider
-        title="Modern History"
+        title="Medieval History"
         subtitle="Buddhism, Dynasties, and the Coming of Islam"
         slides={heroSlides}
       />
